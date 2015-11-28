@@ -36,7 +36,7 @@ Appointments
     <td>{{ appointment.myResponseType }}</td>
     <td>
       <select data-ng-init="appointment.logType = logTypes[0]"
-              data-ng-options="type.name for type in logTypes track by type.id"
+              data-ng-options="type.name for type in logTypes track by $index"
               data-ng-model="appointment.logType"></select>
     </td>
   </tr>
@@ -52,6 +52,7 @@ Appointments
 
 <hr>
 <h2>Configuration</h2>
+<h3>Credentials</h3>
 <p>Exchange URL: <input type="text" data-ng-model="config.exchange.url"></p>
 <p>(Leave Exchange username and password empty to use domain authentication)</p>
 <p>Exchange Username: <input type="text" data-ng-model="config.exchange.username"></p>
@@ -60,6 +61,23 @@ Appointments
 <p>JIRA URL: <input type="text" data-ng-model="config.jira.url"></p>
 <p>JIRA Username: <input type="text" data-ng-model="config.jira.username"></p>
 <p>JIRA Password: <input type="password" data-ng-model="config.jira.password"</p>
+
+<h3>Log Types</h3>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Issue Key</th>
+    <th>Account Key</th>
+    <th></th>
+  </tr>
+  <tr data-ng-repeat="logType in config.logTypes">
+    <td><input type="text" data-ng-model="logType.name"></td>
+    <td><input type="text" data-ng-model="logType.issueKey"></td>
+    <td><input type="text" data-ng-model="logType.accountKey"></td>
+    <td><button data-ng-click="deleteLogType($index)">&times;</button></td>
+  </tr>
+</table>
+<button data-ng-click="addLogType()">Add new log type</button>
 <p><button data-ng-click="saveConfig()">Save</button></p>
 <p>{{ configStatus }}</p>
 

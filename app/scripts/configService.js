@@ -18,9 +18,23 @@ configService.factory('configService', ['$q', function($q) {
     var deferred = $q.defer();
 
     chrome.storage.local.get('config', function(data) {
-      config = data.config;
+      // Create template (for initial setup)
+      config = {
+        exchange: {
+          url: '',
+          username: '',
+          password: ''
+        },
+        jira: {
+          url: '',
+          username: '',
+          password: ''
+        },
+        logTypes: []
+      };
 
-      // TODO: initialize structure
+      // Merge with loaded config
+      angular.merge(config, data.config);
 
       // Return copy for use in UI
       deferred.resolve(angular.copy(config));
@@ -38,9 +52,12 @@ configService.factory('configService', ['$q', function($q) {
     var deferred = $q.defer();
 
     // TODO: Make sure URLs end with '/'
-    chrome.storage.local.set({config: newConfig}, deferred.resolve);
+    // TODO: Check for presence of issueKey and accountKey
 
-    config = angular.copy(newConfig);
+    chrome.storage.local.set({config: newConfig}, function() {
+      config = angular.copy(newConfig);
+      deferred.resolve(config);
+    });
 
     return deferred.promise;
   };

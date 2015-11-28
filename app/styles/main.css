@@ -1,3 +1,8 @@
 body {
   padding: 20px;
 }
+
+/* Should be scrollable */
+html, body {
+  overflow-y: visible;
+}

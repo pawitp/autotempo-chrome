@@ -11,14 +11,6 @@ myApp.controller('AppController', ['$scope', '$timeout', 'exchangeService', 'jir
     $scope.inputDate = new Date();
     $scope.results = [];
 
-    // Mock
-    $scope.logTypes = [
-      {id: 0, name: 'Do not log '},
-      {id: 1, name: 'Daily', issueKey: 'TP-1', accountKey: 'ATT01'},
-      {id: 2, name: 'General Meeting', issueKey: 'TP-2', accountKey: 'ATT02'},
-      {id: 3, name: 'Grooming', issueKey: 'TP-3', accountKey: 'ATT03'}
-    ];
-
     $scope.fetchAppointments = function() {
       console.log('Fetching appointments for ' + $scope.inputDate);
       // TODO: error handling
@@ -35,7 +27,8 @@ myApp.controller('AppController', ['$scope', '$timeout', 'exchangeService', 'jir
       console.log('Submitting to tempo');
 
       angular.forEach($scope.appointments, function(appointment) {
-        if (appointment.logType.id === 0) {
+        if (appointment.logType.issueKey === null) {
+          // "Do not log"
           return;
         }
 
@@ -60,9 +53,24 @@ myApp.controller('AppController', ['$scope', '$timeout', 'exchangeService', 'jir
       });
     };
 
+    $scope.deleteLogType = function(index) {
+      $scope.config.logTypes.splice(index, 1);
+    };
+
+    $scope.addLogType = function() {
+      $scope.config.logTypes.push({});
+    };
+
+    function loadConfig(config) {
+      $scope.config = config;
+      $scope.logTypes = angular.copy(config.logTypes);
+      $scope.logTypes.unshift({name: 'Do not log'});
+    }
+
     $scope.saveConfig = function() {
       configService.saveConfig($scope.config)
-        .then(function() {
+        .then(function(config) {
+          loadConfig(config);
           $scope.configStatus = 'Saved configuration successfully';
           return $timeout(5000);
         })
@@ -73,7 +81,7 @@ myApp.controller('AppController', ['$scope', '$timeout', 'exchangeService', 'jir
 
     // Init
     configService.initConfig().then(function(config) {
-      $scope.config = config;
+      loadConfig(config);
       $scope.fetchAppointments();
     });
 
