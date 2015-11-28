@@ -1,0 +1,10 @@
+{
+    "appName": {
+        "message": "AutoTempo",
+        "description": "The name of the application"
+    },
+    "appDescription": {
+        "message": "Fetch appointments from Exchange and log them into Tempo.",
+        "description": "The description of the application"
+    }
+}

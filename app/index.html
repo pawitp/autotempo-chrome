@@ -1,0 +1,80 @@
+<!doctype html>
+<html data-ng-app="autoTempoApp">
+<head>
+  <meta charset="utf-8">
+  <title>AutoTempo</title>
+
+  <!-- build:css styles/vendor.css -->
+  <link rel="stylesheet" href="bower_components/angular/angular-csp.css">
+  <!-- bower:css -->
+  <!-- endbower -->
+  <!-- endbuild -->
+
+  <!-- build:css styles/main.css -->
+  <link rel="stylesheet" href="styles/main.css">
+  <!-- endbuild -->
+</head>
+<body data-ng-controller="AppController" data-ng-cloak>
+Date to get from exchange
+<input type="date" data-ng-model="inputDate" data-ng-change="fetchAppointments()">
+<hr>
+Appointments
+<table>
+  <tr>
+    <th>Subject</th>
+    <th>Start</th>
+    <th>End</th>
+    <th>Duration</th>
+    <th>My Response Type</th>
+    <th>Log as</th>
+  </tr>
+  <tr data-ng-repeat="appointment in appointments">
+    <td>{{ appointment.subject }}</td>
+    <td>{{ appointment.start | date: "HH:mm" }}</td>
+    <td>{{ appointment.end | date: "HH:mm" }}</td>
+    <td>{{ (appointment.end - appointment.start) / 3600000 | number: 2 }} h</td>
+    <td>{{ appointment.myResponseType }}</td>
+    <td>
+      <select data-ng-init="appointment.logType = logTypes[0]"
+              data-ng-options="type.name for type in logTypes track by type.id"
+              data-ng-model="appointment.logType"></select>
+    </td>
+  </tr>
+</table>
+<hr>
+<button data-ng-click="submitTempo()">Log to tempo!</button>
+
+<hr>
+<h2>Result</h2>
+<ul data-ng-repeat="result in results">
+  <li>Logging "{{ result.subject }}" as {{ result.issueKey }} account {{ result.accountKey }} for {{ result.duration / 3600000 | number : 2}} h: {{ result.status }}</li>
+</ul>
+
+<hr>
+<h2>Configuration</h2>
+<p>Exchange URL: <input type="text" data-ng-model="config.exchange.url"></p>
+<p>(Leave Exchange username and password empty to use domain authentication)</p>
+<p>Exchange Username: <input type="text" data-ng-model="config.exchange.username"></p>
+<p>Exchange Password: <input type="password" data-ng-model="config.exchange.password"</p>
+<br>
+<p>JIRA URL: <input type="text" data-ng-model="config.jira.url"></p>
+<p>JIRA Username: <input type="text" data-ng-model="config.jira.username"></p>
+<p>JIRA Password: <input type="password" data-ng-model="config.jira.password"</p>
+<p><button data-ng-click="saveConfig()">Save</button></p>
+<p>{{ configStatus }}</p>
+
+<!-- build:js scripts/vendor.js -->
+<!-- bower:js -->
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-base64/angular-base64.js"></script>
+<!-- endbower -->
+<!-- endbuild -->
+
+<!-- build:js scripts/main.js -->
+<script src="scripts/app.js"></script>
+<script src="scripts/configService.js"></script>
+<script src="scripts/exchangeService.js"></script>
+<script src="scripts/jiraService.js"></script>
+<!-- endbuild -->
+</body>
+</html>

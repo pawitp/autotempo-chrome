@@ -1,0 +1,14 @@
+{
+  "name": "autotempo-chrome",
+  "version": "0.1",
+  "dependencies": {
+    "angular": "~1.4.8",
+    "angular-base64": "~2.0.5"
+  },
+  "devDependencies": {
+    "mocha": "~2.3.4",
+    "chai": "~3.4.2",
+    "angular-mocks": "~1.4.8"
+  },
+  "private": true
+}
