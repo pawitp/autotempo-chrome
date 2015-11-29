@@ -6,8 +6,8 @@ var myApp = angular.module('autoTempoApp', [
   'configService'
 ]);
 
-myApp.controller('AppController', ['$scope', '$timeout', 'exchangeService', 'jiraService', 'configService',
-  function($scope, $timeout, exchangeService, jiraService, configService) {
+myApp.controller('AppController', ['$scope', '$timeout', '$q', 'exchangeService', 'jiraService', 'configService',
+  function($scope, $timeout, $q, exchangeService, jiraService, configService) {
     $scope.inputDate = new Date();
     $scope.results = [];
 
@@ -26,6 +26,8 @@ myApp.controller('AppController', ['$scope', '$timeout', 'exchangeService', 'jir
     $scope.submitTempo = function() {
       console.log('Submitting to tempo');
 
+      var submitQueue = [];
+
       angular.forEach($scope.appointments, function(appointment) {
         // TODO: log one-by-one to prevent load to server and wrong estimates
         if (appointment.logType.issueKey === undefined) {
@@ -38,21 +40,32 @@ myApp.controller('AppController', ['$scope', '$timeout', 'exchangeService', 'jir
           issueKey: appointment.logType.issueKey,
           accountKey: appointment.logType.accountKey,
           duration: appointment.end - appointment.start,
-          status: 'Processing'
+          status: 'Queued'
         };
 
         $scope.results.push(result);
-
-        jiraService.submitTempo(appointment)
-          .then(function(response) {
-            result.response = response; // TODO: show time left
-            result.status = 'Success';
-          })
-          .catch(function(error) {
-            result.status = 'Error';
-            console.log('Error submitting work log', error);
-          });
+        submitQueue.push([appointment, result]);
       });
+
+      // Use arr.reduce to log one-by-one to prevent wrong estimates and reduce load on server
+      submitQueue.reduce(function(promise, workItem) {
+        return promise.then(function() {
+          var appointment = workItem[0];
+          var result = workItem[1];
+
+          result.status = 'Processing';
+
+          return jiraService.submitTempo(appointment)
+            .then(function(response) {
+              result.response = response; // TODO: show time left
+              result.status = 'Success';
+            })
+            .catch(function(error) {
+              result.status = 'Error';
+              console.log('Error submitting work log', error);
+            });
+        });
+      }, $q.when());
     };
 
     $scope.deleteLogType = function(index) {
