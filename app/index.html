@@ -36,7 +36,7 @@ Appointments
     <td>{{ appointment.myResponseType }}</td>
     <td>
       <select data-ng-init="appointment.logType = logTypes[0]"
-              data-ng-options="type.name for type in logTypes track by $index"
+              data-ng-options="type.name for type in logTypes"
               data-ng-model="appointment.logType"></select>
     </td>
   </tr>
@@ -51,16 +51,17 @@ Appointments
 </ul>
 
 <hr>
+<!-- TODO: Configuration Helper (at least URL format) -->
 <h2>Configuration</h2>
 <h3>Credentials</h3>
 <p>Exchange URL: <input type="text" data-ng-model="config.exchange.url"></p>
 <p>(Leave Exchange username and password empty to use domain authentication)</p>
 <p>Exchange Username: <input type="text" data-ng-model="config.exchange.username"></p>
-<p>Exchange Password: <input type="password" data-ng-model="config.exchange.password"</p>
+<p>Exchange Password: <input type="password" data-ng-model="config.exchange.password"></p>
 <br>
 <p>JIRA URL: <input type="text" data-ng-model="config.jira.url"></p>
 <p>JIRA Username: <input type="text" data-ng-model="config.jira.username"></p>
-<p>JIRA Password: <input type="password" data-ng-model="config.jira.password"</p>
+<p>JIRA Password: <input type="password" data-ng-model="config.jira.password"></p>
 
 <h3>Log Types</h3>
 <table>

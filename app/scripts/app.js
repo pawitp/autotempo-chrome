@@ -27,7 +27,8 @@ myApp.controller('AppController', ['$scope', '$timeout', 'exchangeService', 'jir
       console.log('Submitting to tempo');
 
       angular.forEach($scope.appointments, function(appointment) {
-        if (appointment.logType.issueKey === null) {
+        // TODO: log one-by-one to prevent load to server and wrong estimates
+        if (appointment.logType.issueKey === undefined) {
           // "Do not log"
           return;
         }

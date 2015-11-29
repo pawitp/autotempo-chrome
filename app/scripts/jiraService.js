@@ -33,9 +33,26 @@ jiraService.factory('jiraService', ['$http', '$q', '$base64', 'configService',
       });
     }
 
+    function padNumber(number) {
+      return (number < 10 ? '0' : '') + number;
+    }
+
+    // Tempo operates in local timezone, which may not match our local timezone,
+    // but we want to log in such a way that the date matches the server's timezone.
+    // So send only the local date, without the timezone.
+    // (Thus, we cannot use toISOString() because that uses UTC time)
+    function formatDate(date) {
+      return date.getFullYear() +
+          '-' + padNumber(date.getMonth() + 1) +
+          '-' + padNumber(date.getDate()) +
+          'T' + padNumber(date.getHours()) +
+          ':' + padNumber(date.getMinutes()) +
+          ':' + padNumber(date.getSeconds());
+    }
+
     function createWorklog(appointment, existingEstimate) {
       var workLog = {
-        dateStarted: appointment.start.toISOString(),
+        dateStarted: formatDate(appointment.start),
         timeSpentSeconds: Math.floor((appointment.end - appointment.start) / 1000),
         comment: appointment.subject,
         author: {
@@ -55,7 +72,7 @@ jiraService.factory('jiraService', ['$http', '$q', '$base64', 'configService',
           newEstimate = 0;
         }
 
-        workLog.issue.remainingEstimate = newEstimate;
+        workLog.issue.remainingEstimateSeconds = newEstimate;
       }
 
       return $http.post(configService.getJiraUrl() + REST_WORKLOG_PATH, workLog, {

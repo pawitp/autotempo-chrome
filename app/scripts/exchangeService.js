@@ -68,11 +68,15 @@ exchangeService.factory('exchangeService', ['$http', '$base64', 'configService',
 
     function parseXmlArray(element) {
       var parsedArray = [];
-      var items = element.getElementsByTagName('String');
-      for (var i = 0; i < items.length; i++) {
-        var item = items[i];
-        parsedArray.push(item.childNodes[0].nodeValue);
+
+      if (element !== undefined) {
+        var items = element.getElementsByTagName('String');
+        for (var i = 0; i < items.length; i++) {
+          var item = items[i];
+          parsedArray.push(item.childNodes[0].nodeValue);
+        }
       }
+
       return parsedArray;
     }
 
@@ -82,6 +86,8 @@ exchangeService.factory('exchangeService', ['$http', '$base64', 'configService',
     }
 
     function getExchangeHeaders() {
+      // TODO: Support domain authentication
+      // TODO: window.btoa can be used instead of $base64
       var credentials = $base64.encode(configService.getExchangeUsername() + ':' + configService.getExchangePassword());
       return {
         'Content-Type': 'text/xml',
