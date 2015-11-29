@@ -49,7 +49,8 @@ myApp.controller('AppController', ['$scope', '$timeout', 'exchangeService', 'jir
             result.status = 'Success';
           })
           .catch(function(error) {
-            result.status = 'Error: ' + error;
+            result.status = 'Error';
+            console.log('Error submitting work log', error);
           });
       });
     };
