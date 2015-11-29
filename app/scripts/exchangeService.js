@@ -1,9 +1,9 @@
 'use strict';
 
-var exchangeService = angular.module('exchangeService', ['base64', 'configService']);
+var exchangeService = angular.module('exchangeService', ['utils', 'configService']);
 
-exchangeService.factory('exchangeService', ['$http', '$base64', 'configService',
-  function($http, $base64, configService) {
+exchangeService.factory('exchangeService', ['$http', 'utils', 'configService',
+  function($http, utils, configService) {
     var EXCHANGE_GET_FOLDER_REQ = '<?xml version="1.0" encoding="utf-8"?>' +
       '<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" ' +
       'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
@@ -86,13 +86,7 @@ exchangeService.factory('exchangeService', ['$http', '$base64', 'configService',
     }
 
     function getExchangeHeaders() {
-      // TODO: Support domain authentication
-      // TODO: window.btoa can be used instead of $base64
-      var credentials = $base64.encode(configService.getExchangeUsername() + ':' + configService.getExchangePassword());
-      return {
-        'Content-Type': 'text/xml',
-        'Authorization': 'Basic ' + credentials
-      };
+      return utils.getHttpHeaders('text/xml', configService.getExchangeUsername(), configService.getExchangePassword());
     }
 
     var service = {};

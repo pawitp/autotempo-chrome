@@ -1,19 +1,15 @@
 'use strict';
 
-var jiraService = angular.module('jiraService', ['base64', 'configService']);
+var jiraService = angular.module('jiraService', ['utils', 'configService']);
 
-jiraService.factory('jiraService', ['$http', '$q', '$base64', 'configService',
-  function($http, $q, $base64, configService) {
+jiraService.factory('jiraService', ['$http', '$q', 'utils', 'configService',
+  function($http, $q, utils, configService) {
 
     var REST_WORKLOG_PATH = 'rest/tempo-timesheets/3/worklogs/';
     var REST_ISSUE_TIMETRACKING_PATH = 'rest/api/2/issue/{{ issueKey }}?fields=timetracking';
 
     function getJiraHeaders() {
-      var credentials = $base64.encode(configService.getJiraUsername() + ':' + configService.getJiraPassword());
-      return {
-        'Content-Type': 'application/json',
-        'Authorization': 'Basic ' + credentials
-      };
+      return utils.getHttpHeaders('application/json', configService.getJiraUsername(), configService.getJiraPassword());
     }
 
     function getRemainingEstimate(issueKey) {
