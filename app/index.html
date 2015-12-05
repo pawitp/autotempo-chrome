@@ -41,7 +41,7 @@
               <td>
                 <select class="form-control"
                         data-ng-init="appointment.logType = logTypes[0]"
-                        data-ng-options="type.name for type in logTypes"
+                        data-ng-options="type.name for type in logTypes track by type.name"
                         data-ng-model="appointment.logType"></select>
               </td>
             </tr>
