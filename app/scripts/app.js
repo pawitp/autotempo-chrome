@@ -9,15 +9,20 @@ var myApp = angular.module('autoTempoApp', [
 
 myApp.controller('AppController', ['$scope', '$timeout', '$q', 'exchangeService', 'jiraService', 'configService',
   function($scope, $timeout, $q, exchangeService, jiraService, configService) {
-    $scope.inputDate = new Date();
+    // TODO: Move "appointments" in here as well
+    $scope.exchangeLog = {
+      inputDate: new Date()
+    };
+
     $scope.results = [];
 
     $scope.fetchAppointments = function() {
-      console.log('Fetching appointments for ' + $scope.inputDate);
+      var inputDate = $scope.exchangeLog.inputDate;
+      console.log('Fetching appointments for ' + inputDate);
       // TODO: error handling
       exchangeService.getExchangeFolder()
         .then(function(exchangeFolder) {
-          return exchangeService.getExchangeAppointments(exchangeFolder, $scope.inputDate);
+          return exchangeService.getExchangeAppointments(exchangeFolder, inputDate);
         })
         .then(function(appointments) {
           $scope.appointments = appointments;
@@ -30,7 +35,6 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', 'exchangeService'
       var submitQueue = [];
 
       angular.forEach($scope.appointments, function(appointment) {
-        // TODO: log one-by-one to prevent load to server and wrong estimates
         if (appointment.logType.issueKey === undefined) {
           // "Do not log"
           return;
