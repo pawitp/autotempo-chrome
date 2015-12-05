@@ -6,13 +6,13 @@ utils.factory('utils', function() {
 
   var service = {};
 
-  service.getHttpHeaders = function(contentType, username, password) {
+  service.getHttpHeaders = function(contentType, credentials) {
     var headers = {
       'Content-Type': contentType
     };
 
-    if (username || password) {
-      headers.Authorization = 'Basic ' + window.btoa(username + ':' + password);
+    if (!credentials.spnego) {
+      headers.Authorization = 'Basic ' + window.btoa(credentials.username + ':' + credentials.password);
     }
 
     return headers;

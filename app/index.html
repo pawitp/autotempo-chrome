@@ -71,13 +71,18 @@
                 <label for="exchangeUrl">URL</label>
                 <input type="text" class="form-control" id="exchangeUrl" data-ng-model="config.exchange.url">
               </div>
-              <div class="form-group">
-                <label for="exchangeUsername">Username</label>
-                <input type="text" class="form-control" id="exchangeUsername" data-ng-model="config.exchange.username">
+              <div class="checkbox">
+                <label><input type="checkbox" data-ng-model="config.exchange.spnego">Use domain authentication</label>
               </div>
-              <div class="form-group">
-                <label for="exchangePassword">Password</label>
-                <input type="password" class="form-control" id="exchangePassword" data-ng-model="config.exchange.password">
+              <div data-ng-show="!config.exchange.spnego">
+                <div class="form-group">
+                  <label for="exchangeUsername">Username</label>
+                  <input type="text" class="form-control" id="exchangeUsername" data-ng-model="config.exchange.username">
+                </div>
+                <div class="form-group">
+                  <label for="exchangePassword">Password</label>
+                  <input type="password" class="form-control" id="exchangePassword" data-ng-model="config.exchange.password">
+                </div>
               </div>
             </div>
             <div class="col-md-6">
@@ -86,13 +91,18 @@
                 <label for="jiraUrl">URL</label>
                 <input type="text" class="form-control" id="jiraUrl" data-ng-model="config.jira.url">
               </div>
-              <div class="form-group">
-                <label for="jiraUsername">Username</label>
-                <input type="text" class="form-control" id="jiraUsername" data-ng-model="config.jira.username">
+              <div class="checkbox">
+                <label><input type="checkbox" data-ng-model="config.jira.spnego">Use domain authentication</label>
               </div>
-              <div class="form-group">
-                <label for="jiraPassword">Password</label>
-                <input type="password" class="form-control" id="jiraPassword" data-ng-model="config.jira.password">
+              <div data-ng-show="!config.jira.spnego">
+                <div class="form-group">
+                  <label for="jiraUsername">Username</label>
+                  <input type="text" class="form-control" id="jiraUsername" data-ng-model="config.jira.username">
+                </div>
+                <div class="form-group">
+                  <label for="jiraPassword">Password</label>
+                  <input type="password" class="form-control" id="jiraPassword" data-ng-model="config.jira.password">
+                </div>
               </div>
             </div>
           </div>

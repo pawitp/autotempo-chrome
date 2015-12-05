@@ -9,7 +9,7 @@ jiraService.factory('jiraService', ['$http', '$q', 'utils', 'configService',
     var REST_ISSUE_TIMETRACKING_PATH = 'rest/api/2/issue/{{ issueKey }}?fields=timetracking';
 
     function getJiraHeaders() {
-      return utils.getHttpHeaders('application/json', configService.getJiraUsername(), configService.getJiraPassword());
+      return utils.getHttpHeaders('application/json', configService.getJiraCredentials());
     }
 
     function getRemainingEstimate(issueKey) {

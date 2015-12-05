@@ -86,7 +86,7 @@ exchangeService.factory('exchangeService', ['$http', 'utils', 'configService',
     }
 
     function getExchangeHeaders() {
-      return utils.getHttpHeaders('text/xml', configService.getExchangeUsername(), configService.getExchangePassword());
+      return utils.getHttpHeaders('text/xml', configService.getExchangeCredentials());
     }
 
     var service = {};

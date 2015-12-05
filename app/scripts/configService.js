@@ -66,24 +66,24 @@ configService.factory('configService', ['$q', function($q) {
     return config.exchange.url;
   };
 
-  service.getExchangeUsername = function() {
-    return config.exchange.username;
-  };
-
-  service.getExchangePassword = function() {
-    return config.exchange.password;
+  service.getExchangeCredentials = function() {
+    return {
+      username: config.exchange.username,
+      password: config.exchange.password,
+      spnego: config.exchange.spnego
+    };
   };
 
   service.getJiraUrl = function() {
     return config.jira.url;
   };
 
-  service.getJiraUsername = function() {
-    return config.jira.username;
-  };
-
-  service.getJiraPassword = function() {
-    return config.jira.password;
+  service.getJiraCredentials = function() {
+    return {
+      username: config.jira.username,
+      password: config.jira.password,
+      spnego: config.jira.spnego
+    };
   };
 
   return service;
