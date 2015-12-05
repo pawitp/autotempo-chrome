@@ -1,6 +1,7 @@
 'use strict';
 
 var myApp = angular.module('autoTempoApp', [
+  'ui.bootstrap',
   'exchangeService',
   'jiraService',
   'configService'

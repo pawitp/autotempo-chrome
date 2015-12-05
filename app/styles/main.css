@@ -6,3 +6,8 @@ body {
 html, body {
   overflow-y: visible;
 }
+
+/* Fix according to angular-bootstrap */
+.nav, .pagination, .carousel, .panel-title a {
+  cursor: pointer;
+}
