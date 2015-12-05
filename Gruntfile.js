@@ -218,6 +218,13 @@ module.exports = function(grunt) {
       }
     },
 
+    // Preserve license comments
+    uglify: {
+      options: {
+        preserveComments: require('uglify-save-license')
+      }
+    },
+
     // By default, your `index.html`'s <!-- Usemin block --> will take care of
     // minification. These next options are pre-configured if you do not wish
     // to use the Usemin blocks.
