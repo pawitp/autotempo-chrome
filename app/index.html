@@ -91,12 +91,12 @@
                 <input type="text" class="form-control" id="exchangeUrl" data-ng-model="config.exchange.url" placeholder="https://mail.yourcompany.com/">
               </div>
               <div class="checkbox">
-                <label><input type="checkbox" data-ng-model="config.exchange.spnego">Use domain authentication</label>
+                <label uib-tooltip="Attempt to use Windows Credentials to login to Exchange (may not always work)"><input type="checkbox" data-ng-model="config.exchange.spnego">Use Windows Credentials</label>
               </div>
               <div data-ng-show="!config.exchange.spnego">
                 <div class="form-group">
                   <label for="exchangeUsername">Username</label>
-                  <input type="text" class="form-control" id="exchangeUsername" data-ng-model="config.exchange.username">
+                  <input type="text" class="form-control" id="exchangeUsername" data-ng-model="config.exchange.username" placeholder="domain\user">
                 </div>
                 <div class="form-group">
                   <label for="exchangePassword">Password</label>
