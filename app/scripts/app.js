@@ -2,13 +2,14 @@
 
 var myApp = angular.module('autoTempoApp', [
   'ui.bootstrap',
+  'ngQueue',
   'exchangeService',
   'jiraService',
   'configService'
 ]);
 
-myApp.controller('AppController', ['$scope', '$timeout', '$q', 'exchangeService', 'jiraService', 'configService',
-  function($scope, $timeout, $q, exchangeService, jiraService, configService) {
+myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', 'exchangeService', 'jiraService', 'configService',
+  function($scope, $timeout, $q, $queueFactory, exchangeService, jiraService, configService) {
     // TODO: Move "appointments" in here as well
     $scope.exchangeLog = {
       inputDate: new Date()
@@ -34,52 +35,44 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', 'exchangeService'
         });
     };
 
-    function submitTempo(appointments) {
-      var submitQueue = [];
+    var submitQueue = $queueFactory(1, true);
 
-      angular.forEach(appointments, function(appointment) {
-        // TODO: We need to queue appointments from different submission as well
+    function submitTempo(appointment) {
+      if (appointment.logType.issueKey === undefined) {
+        // "Do not log"
+        return;
+      }
 
-        if (appointment.logType.issueKey === undefined) {
-          // "Do not log"
-          return;
-        }
+      var result = {
+        subject: appointment.subject,
+        issueKey: appointment.logType.issueKey,
+        accountKey: appointment.logType.accountKey,
+        duration: appointment.end - appointment.start,
+        status: 'Queued'
+      };
 
-        var result = {
-          subject: appointment.subject,
-          issueKey: appointment.logType.issueKey,
-          accountKey: appointment.logType.accountKey,
-          duration: appointment.end - appointment.start,
-          status: 'Queued'
-        };
+      $scope.results.push(result);
 
-        $scope.results.push(result);
-        submitQueue.push([appointment, result]);
+      // Use queue to log one-by-one to prevent wrong estimates and reduce load on server
+      submitQueue.enqueue(function() {
+        result.status = 'Processing';
+
+        return jiraService.submitTempo(appointment)
+          .then(function(response) {
+            result.response = response; // TODO: show time left
+            result.status = 'Success';
+          })
+          .catch(function(error) {
+            result.status = 'Error';
+            console.log('Error submitting work log', error);
+          });
       });
-
-      // Use arr.reduce to log one-by-one to prevent wrong estimates and reduce load on server
-      submitQueue.reduce(function(promise, workItem) {
-        return promise.then(function() {
-          var appointment = workItem[0];
-          var result = workItem[1];
-
-          result.status = 'Processing';
-
-          return jiraService.submitTempo(appointment)
-            .then(function(response) {
-              result.response = response; // TODO: show time left
-              result.status = 'Success';
-            })
-            .catch(function(error) {
-              result.status = 'Error';
-              console.log('Error submitting work log', error);
-            });
-        });
-      }, $q.when());
     }
 
     $scope.submitExchangeLog = function() {
-      submitTempo($scope.appointments);
+      angular.forEach($scope.appointments, function(appointment) {
+        submitTempo(appointment);
+      });
     };
 
     $scope.deleteLogType = function(index) {
@@ -134,7 +127,7 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', 'exchangeService'
 
     function clearQuickLog() {
       $scope.quickLog = {
-        date: new Date(),
+        date: angular.isDefined($scope.quickLog) ? $scope.quickLog.date : new Date(),
         logType: $scope.logTypes[0],
         durationHours: 0
       };
@@ -166,7 +159,7 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', 'exchangeService'
         logType: quickLog.logType
       };
 
-      submitTempo([appointment]);
+      submitTempo(appointment);
       clearQuickLog();
     };
 
