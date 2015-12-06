@@ -52,7 +52,7 @@ jiraService.factory('jiraService', ['$http', '$q', 'utils', 'configService',
         timeSpentSeconds: Math.floor((appointment.end - appointment.start) / 1000),
         comment: appointment.subject,
         author: {
-          name: configService.getJiraUsername()
+          name: configService.getJiraCredentials().username
         },
         issue: {
           key: appointment.logType.issueKey

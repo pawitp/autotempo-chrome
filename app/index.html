@@ -90,18 +90,13 @@
                 <label for="jiraUrl">URL</label>
                 <input type="text" class="form-control" id="jiraUrl" data-ng-model="config.jira.url">
               </div>
-              <div class="checkbox">
-                <label><input type="checkbox" data-ng-model="config.jira.spnego">Use domain authentication</label>
+              <div class="form-group">
+                <label for="jiraUsername">Username</label>
+                <input type="text" class="form-control" id="jiraUsername" data-ng-model="config.jira.username">
               </div>
-              <div data-ng-show="!config.jira.spnego">
-                <div class="form-group">
-                  <label for="jiraUsername">Username</label>
-                  <input type="text" class="form-control" id="jiraUsername" data-ng-model="config.jira.username">
-                </div>
-                <div class="form-group">
-                  <label for="jiraPassword">Password</label>
-                  <input type="password" class="form-control" id="jiraPassword" data-ng-model="config.jira.password">
-                </div>
+              <div class="form-group">
+                <label for="jiraPassword">Password</label>
+                <input type="password" class="form-control" id="jiraPassword" data-ng-model="config.jira.password">
               </div>
             </div>
           </div>
