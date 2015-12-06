@@ -106,11 +106,19 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', 'exchangeService'
     function clearQuickLog() {
       $scope.quickLog = {
         date: new Date(),
-        comment: '', // TODO: default and read-only based on type
         logType: $scope.logTypes[0],
         durationHours: 0
       };
     }
+
+    $scope.quickLogOverrideComment = function(comment) {
+      if (comment) {
+        $scope.quickLog.comment = comment;
+        $scope.quickLog.commentReadOnly = true;
+      } else {
+        $scope.quickLog.commentReadOnly = false;
+      }
+    };
 
     function addSeconds(date, seconds) {
       var newDate = new Date(date);
