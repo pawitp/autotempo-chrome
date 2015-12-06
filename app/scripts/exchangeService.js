@@ -4,6 +4,9 @@ var exchangeService = angular.module('exchangeService', ['utils', 'configService
 
 exchangeService.factory('exchangeService', ['$http', 'utils', 'configService',
   function($http, utils, configService) {
+
+    var EWS_PATH = 'ews/exchange.asmx';
+
     var EXCHANGE_GET_FOLDER_REQ = '<?xml version="1.0" encoding="utf-8"?>' +
       '<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" ' +
       'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
@@ -92,7 +95,7 @@ exchangeService.factory('exchangeService', ['$http', 'utils', 'configService',
     var service = {};
 
     service.getExchangeFolder = function() {
-      return $http.post(configService.getExchangeUrl(), EXCHANGE_GET_FOLDER_REQ, {
+      return $http.post(configService.getExchangeUrl() + EWS_PATH, EXCHANGE_GET_FOLDER_REQ, {
         headers: getExchangeHeaders()
       }).then(function successCallback(response) {
         var parser = new DOMParser();
@@ -126,7 +129,7 @@ exchangeService.factory('exchangeService', ['$http', 'utils', 'configService',
         .replace('{{ folderId }}', exchangeFolder.id)
         .replace('{{ folderChangeKey }}', exchangeFolder.changeKey);
 
-      return $http.post(configService.getExchangeUrl(), request, {
+      return $http.post(configService.getExchangeUrl() + EWS_PATH, request, {
         headers: getExchangeHeaders()
       }).then(function successCallback(response) {
         return parseExchangeAppointments(response);

@@ -57,7 +57,6 @@
           </div>
         </uib-tab>
         <uib-tab heading="Configuration">
-          <!-- TODO: Configuration Helper (at least URL format) -->
           <div class="row">
             <div class="col-md-12">
               <h3>Credentials</h3>
@@ -68,7 +67,7 @@
               <h4>Exchange</h4>
               <div class="form-group">
                 <label for="exchangeUrl">URL</label>
-                <input type="text" class="form-control" id="exchangeUrl" data-ng-model="config.exchange.url">
+                <input type="text" class="form-control" id="exchangeUrl" data-ng-model="config.exchange.url" placeholder="https://mail.yourcompany.com/">
               </div>
               <div class="checkbox">
                 <label><input type="checkbox" data-ng-model="config.exchange.spnego">Use domain authentication</label>
@@ -88,7 +87,7 @@
               <h4>JIRA/Tempo</h4>
               <div class="form-group">
                 <label for="jiraUrl">URL</label>
-                <input type="text" class="form-control" id="jiraUrl" data-ng-model="config.jira.url">
+                <input type="text" class="form-control" id="jiraUrl" data-ng-model="config.jira.url" placeholder="http://jira.yourcompany.com/">
               </div>
               <div class="form-group">
                 <label for="jiraUsername">Username</label>
