@@ -14,6 +14,11 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', 'exchangeService'
       inputDate: new Date()
     };
 
+    // TODO: Move "config" in here
+    $scope.configuration = {
+      importExport: ''
+    };
+
     $scope.results = [];
 
     $scope.fetchAppointments = function() {
@@ -101,6 +106,30 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', 'exchangeService'
         .then(function() {
           $scope.configStatus = '';
         });
+    };
+
+    $scope.importConfig = function() {
+      var newConfig = JSON.parse($scope.configuration.importExport);
+
+      // Preserve username and password
+      newConfig.exchange.username = $scope.config.exchange.username;
+      newConfig.exchange.password = $scope.config.exchange.password;
+      newConfig.jira.username = $scope.config.jira.username;
+      newConfig.jira.password = $scope.config.jira.password;
+
+      $scope.saveConfig();
+    };
+
+    $scope.exportConfig = function() {
+      configService.initConfig().then(function(config) {
+        // Clean out username and password
+        config.exchange.username = undefined;
+        config.exchange.password = undefined;
+        config.jira.username = undefined;
+        config.jira.password = undefined;
+
+        $scope.configuration.importExport = JSON.stringify(config);
+      });
     };
 
     function clearQuickLog() {

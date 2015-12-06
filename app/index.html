@@ -146,6 +146,16 @@
               <p>{{ configStatus }}</p>
             </div>
           </div>
+          <div class="row">
+            <div class="col-md-12">
+              <h3>Import/Export</h3>
+              <p>
+                <button data-ng-click="importConfig()" class="btn btn-default">Import</button>
+                <button data-ng-click="exportConfig()" class="btn btn-default">Export</button>
+              </p>
+              <textarea class="form-control" data-ng-model="configuration.importExport" placeholder="To import, paste here and press import. To export, press export and configuration will be displayed here."></textarea>
+            </div>
+          </div>
         </uib-tab>
       </uib-tabset>
     </div>
