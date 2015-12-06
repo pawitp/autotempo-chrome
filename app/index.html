@@ -46,7 +46,6 @@
               </td>
             </tr>
           </table>
-          <hr>
           <button data-ng-click="submitExchangeLog()" class="btn btn-primary">Log to tempo!</button>
         </uib-tab>
         <uib-tab heading="Quick Log">
@@ -163,10 +162,25 @@
 
   <div class="row">
     <div class="col-md-12">
-      <h2>Results</h2>
-      <ul data-ng-repeat="result in results">
-        <li>Logging "{{ result.subject }}" as {{ result.issueKey }} account {{ result.accountKey }} for {{ result.duration / 3600000 | number : 2}} h: {{ result.status }}</li>
-      </ul>
+      <h2>Results <small><a href="" data-ng-click="clearResult()">Clear</a></small></h2>
+      <table class="table table-condensed">
+        <tr>
+          <th>Comment</th>
+          <th>Issue</th>
+          <th>Account</th>
+          <th>Duration</th>
+          <th>Remaining Estimate</th>
+          <th>Status</th>
+        </tr>
+        <tr data-ng-repeat="result in results" data-ng-class="result.style">
+          <td>{{ result.subject }}</td>
+          <td>{{ result.issueKey }} {{ result.response.issue.summary }}</td>
+          <td>{{ result.accountKey }}</td>
+          <td>{{ result.duration / 3600000 | number : 2}} h</td>
+          <td><span data-ng-if="result.response.issue.remainingEstimateSeconds">{{ result.response.issue.remainingEstimateSeconds / 3600 | number : 2}} h</span></td>
+          <td>{{ result.status }}</td>
+        </tr>
+      </table>
     </div>
   </div>
 

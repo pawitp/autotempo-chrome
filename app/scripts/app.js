@@ -51,23 +51,30 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', 
         status: 'Queued'
       };
 
-      $scope.results.push(result);
+      $scope.results.unshift(result);
 
       // Use queue to log one-by-one to prevent wrong estimates and reduce load on server
       submitQueue.enqueue(function() {
+        result.style = 'warning';
         result.status = 'Processing';
 
         return jiraService.submitTempo(appointment)
           .then(function(response) {
-            result.response = response; // TODO: show time left
+            result.response = response.data;
+            result.style = 'success';
             result.status = 'Success';
           })
           .catch(function(error) {
+            result.style = 'danger';
             result.status = 'Error';
             console.log('Error submitting work log', error);
           });
       });
     }
+
+    $scope.clearResult = function() {
+      $scope.results = [];
+    };
 
     $scope.submitExchangeLog = function() {
       angular.forEach($scope.appointments, function(appointment) {
