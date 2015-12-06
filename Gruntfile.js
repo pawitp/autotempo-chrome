@@ -148,7 +148,8 @@ module.exports = function(grunt) {
     bowerInstall: {
       app: {
         src: ['<%= config.app %>/index.html', 'test/index.html'],
-        ignorePath: '<%= config.app %>/'
+        ignorePath: '<%= config.app %>/',
+        exclude: ['bower_components/bootstrap', 'bower_components/jquery']
       }
     },
 
