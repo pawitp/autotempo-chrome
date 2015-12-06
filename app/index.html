@@ -107,6 +107,7 @@
                   <th>Name</th>
                   <th>Issue Key</th>
                   <th>Account Key</th>
+                  <th>Comment</th>
                   <th></th>
                 </tr>
                 <!-- TODO: Validation, no same name -->
@@ -114,6 +115,7 @@
                   <td><input type="text" data-ng-model="logType.name" class="form-control"></td>
                   <td><input type="text" data-ng-model="logType.issueKey" class="form-control"></td>
                   <td><input type="text" data-ng-model="logType.accountKey" class="form-control"></td>
+                  <td><input type="text" data-ng-model="logType.override.comment" class="form-control" placeholder="Leave blank to use appointment subject"></td>
                   <td><button data-ng-click="deleteLogType($index)" class="btn btn-danger">&times;</button></td>
                 </tr>
               </table>

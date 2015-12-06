@@ -62,6 +62,13 @@ jiraService.factory('jiraService', ['$http', '$q', 'utils', 'configService',
         ]
       };
 
+      // Merge in overrides
+      if (appointment.logType.override) {
+        if (appointment.logType.override.comment) {
+          workLog.comment = appointment.logType.override.comment;
+        }
+      }
+
       if (existingEstimate !== null) {
         var newEstimate = existingEstimate - workLog.timeSpentSeconds;
         if (newEstimate < 0) {
