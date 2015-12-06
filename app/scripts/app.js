@@ -29,12 +29,12 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', 'exchangeService'
         });
     };
 
-    $scope.submitTempo = function() {
-      console.log('Submitting to tempo');
-
+    function submitTempo(appointments) {
       var submitQueue = [];
 
-      angular.forEach($scope.appointments, function(appointment) {
+      angular.forEach(appointments, function(appointment) {
+        // TODO: We need to queue appointments from different submission as well
+
         if (appointment.logType.issueKey === undefined) {
           // "Do not log"
           return;
@@ -71,6 +71,10 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', 'exchangeService'
             });
         });
       }, $q.when());
+    }
+
+    $scope.submitExchangeLog = function() {
+      submitTempo($scope.appointments);
     };
 
     $scope.deleteLogType = function(index) {
@@ -99,10 +103,41 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', 'exchangeService'
         });
     };
 
+    function clearQuickLog() {
+      $scope.quickLog = {
+        date: new Date(),
+        comment: '', // TODO: default and read-only based on type
+        logType: $scope.logTypes[0],
+        durationHours: 0
+      };
+    }
+
+    function addSeconds(date, seconds) {
+      var newDate = new Date(date);
+      newDate.setSeconds(newDate.getSeconds() + seconds);
+      return newDate;
+    }
+
+    $scope.submitQuickLog = function() {
+      var quickLog = $scope.quickLog;
+
+      // Create "appointment" from quick log
+      var appointment = {
+        start: quickLog.date,
+        end: addSeconds(quickLog.date, quickLog.durationHours * 3600),
+        subject: quickLog.comment,
+        logType: quickLog.logType
+      };
+
+      submitTempo([appointment]);
+      clearQuickLog();
+    };
+
     // Init
     configService.initConfig().then(function(config) {
       loadConfig(config);
       $scope.fetchAppointments();
+      clearQuickLog();
     });
 
   }]);

@@ -47,12 +47,33 @@
             </tr>
           </table>
           <hr>
-          <button data-ng-click="submitTempo()" class="btn btn-primary">Log to tempo!</button>
+          <button data-ng-click="submitExchangeLog()" class="btn btn-primary">Log to tempo!</button>
         </uib-tab>
         <uib-tab heading="Quick Log">
           <div class="row">
             <div class="col-md-12">
-              <div class="alert alert-warning" role="alert">Under Construction</div>
+              <form role="form" data-ng-submit="submitQuickLog()">
+                <div class="form-group">
+                  <label for="quickDate">Date</label>
+                  <input type="date" class="form-control" id="quickDate" data-ng-model="quickLog.date">
+                </div>
+                <div class="form-group">
+                  <label for="quickLogType">Type</label>
+                  <select id="quickLogType"
+                          class="form-control"
+                          data-ng-options="type.name for type in logTypes track by type.name"
+                          data-ng-model="quickLog.logType"></select>
+                </div>
+                <div class="form-group">
+                  <label for="quickDuration">Hours</label>
+                  <input type="number" class="form-control" id="quickDuration" data-ng-model="quickLog.durationHours">
+                </div>
+                <div class="form-group">
+                  <label for="quickComment">Comment</label>
+                  <textarea class="form-control" id="quickComment" data-ng-model="quickLog.comment"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
             </div>
           </div>
         </uib-tab>
