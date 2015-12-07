@@ -32,7 +32,7 @@
               <th>My Response Type</th>
               <th>Log as</th>
             </tr>
-            <tr data-ng-repeat="appointment in appointments">
+            <tr data-ng-repeat="appointment in exchangeLog.appointments">
               <td>{{ appointment.subject }}</td>
               <td>{{ appointment.start | date: "HH:mm" }}</td>
               <td>{{ appointment.end | date: "HH:mm" }}</td>
@@ -91,19 +91,19 @@
               <h4>Exchange</h4>
               <div class="form-group">
                 <label for="exchangeUrl">URL</label>
-                <input type="text" class="form-control" id="exchangeUrl" data-ng-model="config.exchange.url" placeholder="https://mail.yourcompany.com/">
+                <input type="text" class="form-control" id="exchangeUrl" data-ng-model="configuration.config.exchange.url" placeholder="https://mail.yourcompany.com/">
               </div>
               <div class="checkbox">
-                <label uib-tooltip="Attempt to use Windows Credentials to login to Exchange (may not always work)"><input type="checkbox" data-ng-model="config.exchange.spnego">Use Windows Credentials</label>
+                <label uib-tooltip="Attempt to use Windows Credentials to login to Exchange (may not always work)"><input type="checkbox" data-ng-model="configuration.config.exchange.spnego">Use Windows Credentials</label>
               </div>
-              <div data-ng-show="!config.exchange.spnego">
+              <div data-ng-show="!configuration.config.exchange.spnego">
                 <div class="form-group">
                   <label for="exchangeUsername">Username</label>
-                  <input type="text" class="form-control" id="exchangeUsername" data-ng-model="config.exchange.username" placeholder="domain\user">
+                  <input type="text" class="form-control" id="exchangeUsername" data-ng-model="configuration.config.exchange.username" placeholder="domain\user">
                 </div>
                 <div class="form-group">
                   <label for="exchangePassword">Password</label>
-                  <input type="password" class="form-control" id="exchangePassword" data-ng-model="config.exchange.password">
+                  <input type="password" class="form-control" id="exchangePassword" data-ng-model="configuration.config.exchange.password">
                 </div>
               </div>
             </div>
@@ -111,15 +111,15 @@
               <h4>JIRA/Tempo</h4>
               <div class="form-group">
                 <label for="jiraUrl">URL</label>
-                <input type="text" class="form-control" id="jiraUrl" data-ng-model="config.jira.url" placeholder="http://jira.yourcompany.com/">
+                <input type="text" class="form-control" id="jiraUrl" data-ng-model="configuration.config.jira.url" placeholder="http://jira.yourcompany.com/">
               </div>
               <div class="form-group">
                 <label for="jiraUsername">Username</label>
-                <input type="text" class="form-control" id="jiraUsername" data-ng-model="config.jira.username">
+                <input type="text" class="form-control" id="jiraUsername" data-ng-model="configuration.config.jira.username">
               </div>
               <div class="form-group">
                 <label for="jiraPassword">Password</label>
-                <input type="password" class="form-control" id="jiraPassword" data-ng-model="config.jira.password">
+                <input type="password" class="form-control" id="jiraPassword" data-ng-model="configuration.config.jira.password">
               </div>
             </div>
           </div>
@@ -135,7 +135,7 @@
                   <th></th>
                 </tr>
                 <!-- TODO: Validation, no same name -->
-                <tr data-ng-repeat="logType in config.logTypes">
+                <tr data-ng-repeat="logType in configuration.config.logTypes">
                   <td><input type="text" data-ng-model="logType.name" class="form-control"></td>
                   <td><input type="text" data-ng-model="logType.issueKey" class="form-control"></td>
                   <td><input type="text" data-ng-model="logType.accountKey" class="form-control"></td>
@@ -145,7 +145,7 @@
               </table>
               <button data-ng-click="saveConfig()" class="btn btn-primary">Save</button>
               <button data-ng-click="addLogType()" class="btn btn-default">Add new log type</button>
-              <p>{{ configStatus }}</p>
+              <p>{{ configuration.status }}</p>
             </div>
           </div>
           <div class="row">

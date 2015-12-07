@@ -10,14 +10,15 @@ var myApp = angular.module('autoTempoApp', [
 
 myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', 'exchangeService', 'jiraService', 'configService',
   function($scope, $timeout, $q, $queueFactory, exchangeService, jiraService, configService) {
-    // TODO: Move "appointments" in here as well
     $scope.exchangeLog = {
-      inputDate: new Date()
+      inputDate: new Date(),
+      appointments: []
     };
 
-    // TODO: Move "config" in here
     $scope.configuration = {
-      importExport: ''
+      importExport: '',
+      config: {},
+      status: ''
     };
 
     $scope.results = [];
@@ -31,7 +32,7 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', 
         })
         .then(function(appointments) {
           $scope.exchangeLog.error = undefined;
-          $scope.appointments = appointments;
+          $scope.exchangeLog.appointments = appointments;
         })
         .catch(function(reason) {
           console.log('Exchange error', reason);
@@ -41,7 +42,7 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', 
           } else {
             $scope.exchangeLog.error = 'Unknown Error';
           }
-          $scope.appointments = [];
+          $scope.exchangeLog.appointments = [];
         });
     };
 
@@ -87,34 +88,34 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', 
     };
 
     $scope.submitExchangeLog = function() {
-      angular.forEach($scope.appointments, function(appointment) {
+      angular.forEach($scope.exchangeLog.appointments, function(appointment) {
         submitTempo(appointment);
       });
     };
 
     $scope.deleteLogType = function(index) {
-      $scope.config.logTypes.splice(index, 1);
+      $scope.configuration.config.logTypes.splice(index, 1);
     };
 
     $scope.addLogType = function() {
-      $scope.config.logTypes.push({});
+      $scope.configuration.config.logTypes.push({});
     };
 
     function loadConfig(config) {
-      $scope.config = config;
+      $scope.configuration.config = config;
       $scope.logTypes = angular.copy(config.logTypes);
       $scope.logTypes.unshift({name: 'Do not log'});
     }
 
     $scope.saveConfig = function() {
-      configService.saveConfig($scope.config)
+      configService.saveConfig($scope.configuration.config)
         .then(function(config) {
           loadConfig(config);
-          $scope.configStatus = 'Saved configuration successfully';
+          $scope.configuration.status = 'Saved configuration successfully';
           return $timeout(5000);
         })
         .then(function() {
-          $scope.configStatus = '';
+          $scope.configuration.status = '';
         });
     };
 
@@ -122,10 +123,10 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', 
       var newConfig = JSON.parse($scope.configuration.importExport);
 
       // Preserve username and password
-      newConfig.exchange.username = $scope.config.exchange.username;
-      newConfig.exchange.password = $scope.config.exchange.password;
-      newConfig.jira.username = $scope.config.jira.username;
-      newConfig.jira.password = $scope.config.jira.password;
+      newConfig.exchange.username = $scope.configuration.config.exchange.username;
+      newConfig.exchange.password = $scope.configuration.config.exchange.password;
+      newConfig.jira.username = $scope.configuration.config.jira.username;
+      newConfig.jira.password = $scope.configuration.config.jira.password;
 
       $scope.saveConfig();
     };
