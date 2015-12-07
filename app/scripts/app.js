@@ -128,6 +128,7 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', 
       newConfig.jira.username = $scope.configuration.config.jira.username;
       newConfig.jira.password = $scope.configuration.config.jira.password;
 
+      $scope.configuration.config = newConfig;
       $scope.saveConfig();
     };
 
