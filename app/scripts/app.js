@@ -25,13 +25,23 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', 
     $scope.fetchAppointments = function() {
       var inputDate = $scope.exchangeLog.inputDate;
       console.log('Fetching appointments for ' + inputDate);
-      // TODO: error handling
       exchangeService.getExchangeFolder()
         .then(function(exchangeFolder) {
           return exchangeService.getExchangeAppointments(exchangeFolder, inputDate);
         })
         .then(function(appointments) {
+          $scope.exchangeLog.error = undefined;
           $scope.appointments = appointments;
+        })
+        .catch(function(reason) {
+          console.log('Exchange error', reason);
+
+          if (reason.statusText) {
+            $scope.exchangeLog.error = reason.statusText;
+          } else {
+            $scope.exchangeLog.error = 'Unknown Error';
+          }
+          $scope.appointments = [];
         });
     };
 

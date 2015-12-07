@@ -46,6 +46,9 @@
               </td>
             </tr>
           </table>
+          <div class="alert alert-danger" role="alert" data-ng-show="exchangeLog.error">
+            Unable to connect to Exchange: {{ exchangeLog.error }}
+          </div>
           <button data-ng-click="submitExchangeLog()" class="btn btn-primary">Log to tempo!</button>
         </uib-tab>
         <uib-tab heading="Quick Log">
