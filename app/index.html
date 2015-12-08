@@ -187,7 +187,7 @@
           <td>{{ result.accountKey }}</td>
           <td>{{ result.duration / 3600000 | number : 2}} h</td>
           <td><span data-ng-if="result.response.issue.remainingEstimateSeconds">{{ result.response.issue.remainingEstimateSeconds / 3600 | number : 2}} h</span></td>
-          <td>{{ result.status }}</td>
+          <td uib-tooltip="{{ result.statusTooltip }}">{{ result.status }}</td>
         </tr>
       </table>
     </div>

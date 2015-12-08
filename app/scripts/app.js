@@ -78,6 +78,12 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', 
           .catch(function(error) {
             result.style = 'danger';
             result.status = 'Error';
+            if (angular.isObject(error.data)) {
+              // TODO: Extract error from JSON
+              result.statusTooltip = angular.toJson(error.data, true);
+            } else {
+              result.statusTooltip = error.statusText;
+            }
             console.log('Error submitting work log', error);
           });
       });
