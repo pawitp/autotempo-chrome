@@ -43,15 +43,32 @@ configService.factory('configService', ['$q', function($q) {
     return deferred.promise;
   };
 
+  function fixUrl(url) {
+    // Prepend protocol if not specified
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      url = 'http://' + url;
+    }
+
+    // Append '/' if not present
+    if (!url.endsWith('/')) {
+      url += '/';
+    }
+
+    return url;
+  }
+
   /**
-   * Validate configuration and save it into the chorme data store
+   * Validate configuration and save it into the chrome data store
    * @param newConfig configuration to save
    * @returns promise
    */
   service.saveConfig = function(newConfig) {
     var deferred = $q.defer();
 
-    // TODO: Make sure URLs end with '/'
+    // Fix URLs format
+    newConfig.exchange.url = fixUrl(newConfig.exchange.url);
+    newConfig.jira.url = fixUrl(newConfig.jira.url);
+
     // TODO: Check for presence of issueKey and accountKey
 
     chrome.storage.local.set({config: newConfig}, function() {
