@@ -22,7 +22,13 @@
     <div class="col-md-12">
       <uib-tabset>
         <uib-tab heading="Log from Exchange">
-          <h3>Appointments <small class="pull-right"><input type="date" data-ng-model="exchangeLog.inputDate" data-ng-change="fetchAppointments()"></small></h3>
+          <h3>
+            Appointments
+            <small class="pull-right">
+              <input type="date" data-ng-model="exchangeLog.inputDate" data-ng-change="fetchAppointments()">
+              <button data-ng-click="fetchAppointments()" class="btn btn-default">Refresh</button>
+            </small>
+          </h3>
           <table class="table table-condensed">
             <tr>
               <th>Subject</th>
