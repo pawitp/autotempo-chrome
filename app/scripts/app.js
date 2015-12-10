@@ -135,6 +135,16 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', 
       configService.saveConfig($scope.configuration.config)
         .then(function(config) {
           loadConfig(config);
+
+          // Workaround for issue where if accountKey/issueKey is changed
+          // without adding or removing an issue, the accountKey/issueKey
+          // will not be updated in the already selected appointment.
+          // (So just reset the state when we save)
+          // TODO: Fix or move this into loadConfig to reuse code when we initialize the app
+          clearQuickLog();
+          $scope.exchangeLog.appointments = [];
+          $scope.fetchAppointments();
+
           $scope.configuration.status = 'Saved configuration successfully';
           return $timeout(5000);
         })
