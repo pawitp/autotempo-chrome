@@ -7,6 +7,7 @@ jiraService.factory('jiraService', ['$http', '$q', 'utils', 'configService',
 
     var REST_WORKLOG_PATH = 'rest/tempo-timesheets/3/worklogs/';
     var REST_ISSUE_TIMETRACKING_PATH = 'rest/api/2/issue/{{ issueKey }}?fields=timetracking';
+    var REST_ACCOUNT_PATH = 'rest/tempo-rest/1.0/accounts/json/billingKeyList/{{ issueKey }}?callback=fn';
 
     function getJiraHeaders() {
       return utils.getHttpHeaders('application/json', configService.getJiraCredentials());
@@ -44,6 +45,12 @@ jiraService.factory('jiraService', ['$http', '$q', 'utils', 'configService',
           'T' + padNumber(date.getHours()) +
           ':' + padNumber(date.getMinutes()) +
           ':' + padNumber(date.getSeconds());
+    }
+
+    // Some private API of Tempo uses JSONP
+    function parseJsonp(jsonp) {
+      // Assume JSONP starts with "fn(" (default for Tempo)
+      return angular.fromJson(jsonp.substring(3, jsonp.length - 1));
     }
 
     function createWorklog(appointment, existingEstimate) {
@@ -88,6 +95,14 @@ jiraService.factory('jiraService', ['$http', '$q', 'utils', 'configService',
     service.submitTempo = function(appointment) {
       return getRemainingEstimate(appointment.logType.issueKey)
         .then(createWorklog.bind(null, appointment));
+    };
+
+    service.getAccountList = function(issueKey) {
+      return $http.get(configService.getJiraUrl() + REST_ACCOUNT_PATH.replace('{{ issueKey }}', issueKey), {
+        headers: getJiraHeaders()
+      }).then(function successCallback(response) {
+        return parseJsonp(response.data).values;
+      });
     };
 
     return service;

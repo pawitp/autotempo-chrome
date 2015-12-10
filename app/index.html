@@ -184,7 +184,8 @@
         <tr data-ng-repeat="result in results" data-ng-class="result.style">
           <td>{{ result.subject }}</td>
           <td>{{ result.issueKey }} {{ result.response.issue.summary }}</td>
-          <td>{{ result.accountKey }}</td>
+          <td data-ng-if="!result.accountDescription">{{ result.accountKey }}</td>
+          <td data-ng-if="result.accountDescription">{{ result.accountDescription }}</td>
           <td>{{ result.duration / 3600000 | number : 2}} h</td>
           <td><span data-ng-if="result.response.issue.remainingEstimateSeconds">{{ result.response.issue.remainingEstimateSeconds / 3600 | number : 2}} h</span></td>
           <td uib-tooltip="{{ result.statusTooltip }}">{{ result.status }}</td>

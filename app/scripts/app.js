@@ -8,8 +8,8 @@ var myApp = angular.module('autoTempoApp', [
   'configService'
 ]);
 
-myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', 'exchangeService', 'jiraService', 'configService',
-  function($scope, $timeout, $q, $queueFactory, exchangeService, jiraService, configService) {
+myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', '$filter', 'exchangeService', 'jiraService', 'configService',
+  function($scope, $timeout, $q, $queueFactory, $filter, exchangeService, jiraService, configService) {
     $scope.exchangeLog = {
       inputDate: new Date(),
       appointments: []
@@ -46,6 +46,19 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', 
         });
     };
 
+    function getAccountDescription(issueKey, accountKey) {
+      // TODO: Cache result and reuse across issue
+      return jiraService.getAccountList(issueKey)
+        .then(function(accountList) {
+          var found = $filter('filter')(accountList, {key: accountKey}, true);
+          if (found.length > 0) {
+            return found[0].value;
+          } else {
+            throw 'Description for account not found';
+          }
+        });
+    }
+
     var submitQueue = $queueFactory(1, true);
 
     function submitTempo(appointment) {
@@ -74,6 +87,11 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', 
             result.response = response.data;
             result.style = 'success';
             result.status = 'Success';
+
+            // Fetch account description (using another promise since we don't want to error out of this fails)
+            getAccountDescription(result.issueKey, result.accountKey).then(function(description) {
+              result.accountDescription = description;
+            });
           })
           .catch(function(error) {
             result.style = 'danger';
