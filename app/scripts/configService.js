@@ -36,6 +36,21 @@ configService.factory('configService', ['$q', function($q) {
       // Merge with loaded config
       angular.merge(config, data.config);
 
+      // Merge each log type with template
+      angular.forEach(config.logTypes, function(logType) {
+        var logTypeTemplate = {
+          name: '',
+          issueKey: '',
+          accountKey: '',
+          override: {},
+          rules: []
+        };
+
+        // We want the final objext to be set in "logType", but also want "logType" to override "logTypeTemplate"
+        angular.merge(logTypeTemplate, logType);
+        angular.merge(logType, logTypeTemplate);
+      });
+
       // Return copy for use in UI
       deferred.resolve(angular.copy(config));
     });

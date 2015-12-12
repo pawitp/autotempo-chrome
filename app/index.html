@@ -48,7 +48,6 @@
               <td>{{ appointment.myResponseType }}</td>
               <td>
                 <select class="form-control"
-                        data-ng-init="appointment.logType = logTypes[0]"
                         data-ng-options="type.name for type in logTypes track by type.name"
                         data-ng-model="appointment.logType"></select>
               </td>
@@ -150,6 +149,7 @@
                     <th>Issue Key</th>
                     <th>Account Key</th>
                     <th>Comment</th>
+                    <th>Auto Match</th>
                     <th></th>
                   </tr>
                   <!-- TODO: Validation, no same name -->
@@ -159,12 +159,27 @@
                     <td><input type="text" data-ng-model="logType.accountKey" class="form-control"></td>
                     <td><input type="text" data-ng-model="logType.override.comment" class="form-control" placeholder="Leave blank to use appointment subject"></td>
                     <td>
+                      <div class="form-inline" data-ng-repeat="rule in logType.rules">
+                        <select class="form-control" data-ng-model="rule.field">
+                          <option value="subject">Subject</option>
+                          <!-- TODO -->
+                        </select>
+                        <select class="form-control" data-ng-model="rule.op">
+                          <option value="contains">contains</option>
+                        </select>
+                        <input class="form-control" data-ng-model="rule.value">
+                        <a href="" data-ng-click="deleteRule(logType.rules, $index)">Delete</a>
+                      </div>
+                      <a href="" data-ng-click="addRule(logType.rules)">Add</a>
+                    </td>
+                    <td>
                       <button data-ng-click="deleteLogType($index)" class="btn btn-danger">
                         <span class="glyphicon glyphicon-remove"></span>
                       </button>
                     </td>
                   </tr>
                   <tr>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>

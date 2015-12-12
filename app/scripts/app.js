@@ -23,6 +23,24 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', 
 
     $scope.results = [];
 
+    function matchRules(appointments, logTypes) {
+      angular.forEach(appointments, function(appointment) {
+        // Initialize to not match
+        appointment.logType = logTypes[0];
+
+        // Try to match each rule
+        angular.forEach(logTypes, function(logType) {
+          angular.forEach(logType.rules, function(rule) {
+            if (rule.op === 'contains') {
+              if (appointment[rule.field].toLowerCase().includes(rule.value.toLowerCase())) {
+                appointment.logType = logType;
+              }
+            }
+          });
+        });
+      });
+    }
+
     $scope.fetchAppointments = function() {
       var inputDate = $scope.exchangeLog.inputDate;
       console.log('Fetching appointments for ' + inputDate);
@@ -31,6 +49,7 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', 
           return exchangeService.getExchangeAppointments(exchangeFolder, inputDate);
         })
         .then(function(appointments) {
+          matchRules(appointments, $scope.logTypes);
           $scope.exchangeLog.error = undefined;
           $scope.exchangeLog.appointments = appointments;
         })
@@ -127,6 +146,14 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', 
 
     $scope.addLogType = function() {
       $scope.configuration.config.logTypes.push({});
+    };
+
+    $scope.deleteRule = function(rules, index) {
+      rules.splice(index, 1);
+    };
+
+    $scope.addRule = function(rules) {
+      rules.push({});
     };
 
     function loadConfig(config) {
