@@ -24,9 +24,11 @@
         <uib-tab heading="Log from Exchange">
           <h3>
             Appointments
-            <small class="pull-right">
-              <input type="date" data-ng-model="exchangeLog.inputDate" data-ng-change="fetchAppointments()">
-              <button data-ng-click="fetchAppointments()" class="btn btn-default">Refresh</button>
+            <small class="pull-right form-inline">
+              <input type="date" class="form-control" data-ng-model="exchangeLog.inputDate" data-ng-change="fetchAppointments()">
+              <button data-ng-click="fetchAppointments()" class="btn btn-default">
+                <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+              </button>
             </small>
           </h3>
           <table class="table table-condensed">
