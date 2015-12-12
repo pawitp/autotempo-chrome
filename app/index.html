@@ -89,73 +89,90 @@
           </div>
         </uib-tab>
         <uib-tab heading="Configuration">
-          <div class="row">
-            <div class="col-md-12">
-              <h3>Credentials</h3>
+          <form name="configuration.configForm">
+            <div class="row">
+              <div class="col-md-12">
+                <h3>Credentials</h3>
+              </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <h4>Exchange</h4>
-              <div class="form-group">
-                <label for="exchangeUrl">URL</label>
-                <input type="text" class="form-control" id="exchangeUrl" data-ng-model="configuration.config.exchange.url" placeholder="https://mail.yourcompany.com/">
-              </div>
-              <div class="checkbox">
-                <label uib-tooltip="Attempt to use Windows Credentials to login to Exchange (may not always work)"><input type="checkbox" data-ng-model="configuration.config.exchange.spnego">Use Windows Credentials</label>
-              </div>
-              <div data-ng-show="!configuration.config.exchange.spnego">
+            <div class="row">
+              <div class="col-md-6">
+                <h4>Exchange</h4>
                 <div class="form-group">
-                  <label for="exchangeUsername">Username</label>
-                  <input type="text" class="form-control" id="exchangeUsername" data-ng-model="configuration.config.exchange.username" placeholder="domain\user">
+                  <label for="exchangeUrl">URL</label>
+                  <input type="text" class="form-control" id="exchangeUrl" data-ng-model="configuration.config.exchange.url" placeholder="https://mail.yourcompany.com/">
+                </div>
+                <div class="checkbox">
+                  <label uib-tooltip="Attempt to use Windows Credentials to login to Exchange (may not always work)"><input type="checkbox" data-ng-model="configuration.config.exchange.spnego">Use Windows Credentials</label>
+                </div>
+                <div data-ng-show="!configuration.config.exchange.spnego">
+                  <div class="form-group">
+                    <label for="exchangeUsername">Username</label>
+                    <input type="text" class="form-control" id="exchangeUsername" data-ng-model="configuration.config.exchange.username" placeholder="domain\user">
+                  </div>
+                  <div class="form-group">
+                    <label for="exchangePassword">Password</label>
+                    <input type="password" class="form-control" id="exchangePassword" data-ng-model="configuration.config.exchange.password">
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <h4>JIRA/Tempo</h4>
+                <div class="form-group">
+                  <label for="jiraUrl">URL</label>
+                  <input type="text" class="form-control" id="jiraUrl" data-ng-model="configuration.config.jira.url" placeholder="http://jira.yourcompany.com/">
                 </div>
                 <div class="form-group">
-                  <label for="exchangePassword">Password</label>
-                  <input type="password" class="form-control" id="exchangePassword" data-ng-model="configuration.config.exchange.password">
+                  <label for="jiraUsername">Username</label>
+                  <input type="text" class="form-control" id="jiraUsername" data-ng-model="configuration.config.jira.username">
+                </div>
+                <div class="form-group">
+                  <label for="jiraPassword">Password</label>
+                  <input type="password" class="form-control" id="jiraPassword" data-ng-model="configuration.config.jira.password">
                 </div>
               </div>
             </div>
-            <div class="col-md-6">
-              <h4>JIRA/Tempo</h4>
-              <div class="form-group">
-                <label for="jiraUrl">URL</label>
-                <input type="text" class="form-control" id="jiraUrl" data-ng-model="configuration.config.jira.url" placeholder="http://jira.yourcompany.com/">
-              </div>
-              <div class="form-group">
-                <label for="jiraUsername">Username</label>
-                <input type="text" class="form-control" id="jiraUsername" data-ng-model="configuration.config.jira.username">
-              </div>
-              <div class="form-group">
-                <label for="jiraPassword">Password</label>
-                <input type="password" class="form-control" id="jiraPassword" data-ng-model="configuration.config.jira.password">
+            <div class="row">
+              <div class="col-md-12">
+                <h3>Log Types</h3>
+                <table class="table table-condensed">
+                  <tr>
+                    <th>Name</th>
+                    <th>Issue Key</th>
+                    <th>Account Key</th>
+                    <th>Comment</th>
+                    <th></th>
+                  </tr>
+                  <!-- TODO: Validation, no same name -->
+                  <tr data-ng-repeat="logType in configuration.config.logTypes">
+                    <td><input type="text" data-ng-model="logType.name" class="form-control"></td>
+                    <td><input type="text" data-ng-model="logType.issueKey" class="form-control"></td>
+                    <td><input type="text" data-ng-model="logType.accountKey" class="form-control"></td>
+                    <td><input type="text" data-ng-model="logType.override.comment" class="form-control" placeholder="Leave blank to use appointment subject"></td>
+                    <td>
+                      <button data-ng-click="deleteLogType($index)" class="btn btn-danger">
+                        <span class="glyphicon glyphicon-remove"></span>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                      <button data-ng-click="addLogType()" class="btn btn-success">
+                        <span class="glyphicon glyphicon-plus"></span>
+                      </button>
+                    </td>
+                  </tr>
+                </table>
+                <span uib-tooltip="Your configurations are already saved" tooltip-enable="!configuration.configForm.$dirty" tooltip-placement="right">
+                  <button data-ng-click="saveConfig()" data-ng-disabled="!configuration.configForm.$dirty" class="btn btn-primary">Save</button>
+                </span>
               </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <h3>Log Types</h3>
-              <table class="table table-condensed">
-                <tr>
-                  <th>Name</th>
-                  <th>Issue Key</th>
-                  <th>Account Key</th>
-                  <th>Comment</th>
-                  <th></th>
-                </tr>
-                <!-- TODO: Validation, no same name -->
-                <tr data-ng-repeat="logType in configuration.config.logTypes">
-                  <td><input type="text" data-ng-model="logType.name" class="form-control"></td>
-                  <td><input type="text" data-ng-model="logType.issueKey" class="form-control"></td>
-                  <td><input type="text" data-ng-model="logType.accountKey" class="form-control"></td>
-                  <td><input type="text" data-ng-model="logType.override.comment" class="form-control" placeholder="Leave blank to use appointment subject"></td>
-                  <td><button data-ng-click="deleteLogType($index)" class="btn btn-danger">&times;</button></td>
-                </tr>
-              </table>
-              <button data-ng-click="saveConfig()" class="btn btn-primary">Save</button>
-              <button data-ng-click="addLogType()" class="btn btn-default">Add new log type</button>
-              <p>{{ configuration.status }}</p>
-            </div>
-          </div>
+          </form>
           <div class="row">
             <div class="col-md-12">
               <h3>Import/Export</h3>

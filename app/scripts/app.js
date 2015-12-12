@@ -127,6 +127,7 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', 
 
     function loadConfig(config) {
       $scope.configuration.config = config;
+      $scope.configuration.configForm.$setPristine();
       $scope.logTypes = angular.copy(config.logTypes);
       $scope.logTypes.unshift({name: 'Do not log'});
     }
@@ -144,12 +145,6 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', 
           clearQuickLog();
           $scope.exchangeLog.appointments = [];
           $scope.fetchAppointments();
-
-          $scope.configuration.status = 'Saved configuration successfully';
-          return $timeout(5000);
-        })
-        .then(function() {
-          $scope.configuration.status = '';
         });
     };
 
