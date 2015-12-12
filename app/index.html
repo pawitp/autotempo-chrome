@@ -145,19 +145,19 @@
                 <h3>Log Types</h3>
                 <table class="table table-condensed">
                   <tr>
-                    <th>Name</th>
-                    <th>Issue Key</th>
-                    <th>Account Key</th>
-                    <th>Comment</th>
-                    <th>Auto Match</th>
-                    <th></th>
+                    <th class="col-md-2">Name</th>
+                    <th class="col-md-1">Issue</th>
+                    <th class="col-md-1">Account</th>
+                    <th class="col-md-3">Comment</th>
+                    <th class="col-md-4">Auto Match</th>
+                    <th class="col-md-1"></th>
                   </tr>
                   <!-- TODO: Validation, no same name -->
                   <tr data-ng-repeat="logType in configuration.config.logTypes">
                     <td><input type="text" data-ng-model="logType.name" class="form-control"></td>
                     <td><input type="text" data-ng-model="logType.issueKey" class="form-control"></td>
                     <td><input type="text" data-ng-model="logType.accountKey" class="form-control"></td>
-                    <td><input type="text" data-ng-model="logType.override.comment" class="form-control" placeholder="Leave blank to use appointment subject"></td>
+                    <td><input type="text" data-ng-model="logType.override.comment" class="form-control" placeholder="Leave blank to use subject"></td>
                     <td>
                       <div class="form-inline" data-ng-repeat="rule in logType.rules">
                         <select class="form-control" data-ng-model="rule.field">
