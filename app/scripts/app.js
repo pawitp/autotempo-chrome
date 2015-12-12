@@ -29,11 +29,21 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', 
         appointment.logType = logTypes[0];
 
         // Try to match each rule
+        // TODO: Refactor
         angular.forEach(logTypes, function(logType) {
           angular.forEach(logType.rules, function(rule) {
+            var field = appointment[rule.field];
             if (rule.op === 'contains') {
-              if (appointment[rule.field].toLowerCase().includes(rule.value.toLowerCase())) {
-                appointment.logType = logType;
+              if (typeof field === 'string') {
+                if (field.toLowerCase().includes(rule.value.toLowerCase())) {
+                  appointment.logType = logType;
+                }
+              } else if (typeof field === 'object') {
+                // Array
+                var lowerCasedField = field.map(function(x) { return x.toLowerCase(); });
+                if (lowerCasedField.includes(rule.value.toLowerCase())) {
+                  appointment.logType = logType;
+                }
               }
             }
           });
