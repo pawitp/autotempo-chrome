@@ -8,8 +8,8 @@ var myApp = angular.module('autoTempoApp', [
   'configService'
 ]);
 
-myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', '$filter', 'exchangeService', 'jiraService', 'configService',
-  function($scope, $timeout, $q, $queueFactory, $filter, exchangeService, jiraService, configService) {
+myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', '$filter', '$uibModal', 'exchangeService', 'jiraService', 'configService',
+  function($scope, $timeout, $q, $queueFactory, $filter, $uibModal, exchangeService, jiraService, configService) {
     $scope.exchangeLog = {
       inputDate: new Date(),
       appointments: []
@@ -173,6 +173,24 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', 
       });
     };
 
+    $scope.warnDirtyConfig = function() {
+      if ($scope.configuration.configForm.$dirty) {
+        var modalInstance = $uibModal.open({
+          templateUrl: 'warnDirtyConfig.html',
+          controller: 'WarnDirtyConfigCtrl',
+          backdrop: 'static'
+        });
+
+        modalInstance.result.then(function() {
+          // Save
+          $scope.saveConfig();
+        }, function () {
+          // Not saved
+          console.log('Configuration not saved');
+        });
+      }
+    };
+
     function clearQuickLog() {
       $scope.quickLog = {
         date: angular.isDefined($scope.quickLog) ? $scope.quickLog.date : new Date(),
@@ -217,5 +235,18 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', 
       $scope.fetchAppointments();
       clearQuickLog();
     });
+
+  }]);
+
+myApp.controller('WarnDirtyConfigCtrl', ['$scope', '$uibModalInstance',
+  function($scope, $uibModalInstance) {
+
+    $scope.ok = function() {
+      $uibModalInstance.close();
+    };
+
+    $scope.cancel = function() {
+      $uibModalInstance.dismiss('cancel');
+    };
 
   }]);
