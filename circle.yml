@@ -1,6 +1,7 @@
 test:
-  pre:
+  override:
     - bower install
+    - grunt
 general:
   artifacts:
     - "package"
