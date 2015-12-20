@@ -2,32 +2,33 @@
 (function() {
   'use strict';
 
-  var $httpBackend;
+  describe('exchangeService', function() {
 
-  beforeEach(module('exchangeService'));
+    var $httpBackend;
 
-  beforeEach(function() {
-    module(function($provide) {
-      $provide.value('configService', {
-        getExchangeCredentials: function() {
-          return {
-            username: 'username',
-            password: 'password',
-            spnego: false
-          };
-        },
-        getExchangeUrl: function() {
-          return 'https://mail.example.com/';
-        }
+    beforeEach(module('exchangeService'));
+
+    beforeEach(function() {
+      module(function($provide) {
+        $provide.value('configService', {
+          getExchangeCredentials: function() {
+            return {
+              username: 'username',
+              password: 'password',
+              spnego: false
+            };
+          },
+          getExchangeUrl: function() {
+            return 'https://mail.example.com/';
+          }
+        });
       });
     });
-  });
 
-  beforeEach(inject(function($injector) {
-    $httpBackend = $injector.get('$httpBackend');
-  }));
+    beforeEach(inject(function($injector) {
+      $httpBackend = $injector.get('$httpBackend');
+    }));
 
-  describe('exchangeService', function() {
     it('should support authenticating with Basic authentication');
     it('should support authenticating with SPNEGO authentication');
 
@@ -45,11 +46,18 @@
         $httpBackend.flush();
       }));
     });
-  });
 
-  afterEach(function() {
-    $httpBackend.verifyNoOutstandingExpectation();
-    $httpBackend.verifyNoOutstandingRequest();
+    describe('getExchangeAppointments', function() {
+      it('should send request with correct date and folder id');
+      it('should be able to parse response with category');
+      it('should be able to parse response without category');
+    });
+
+    afterEach(function() {
+      $httpBackend.verifyNoOutstandingExpectation();
+      $httpBackend.verifyNoOutstandingRequest();
+    });
+
   });
 
 })();
