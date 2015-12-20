@@ -1,6 +1,8 @@
+dependencies:
+  post:
+    - bower install
 test:
   override:
-    - bower install
     - grunt
 general:
   artifacts:
