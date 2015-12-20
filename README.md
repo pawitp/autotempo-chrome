@@ -5,3 +5,5 @@ AutoTempo Chrome is a Chrome App to download appointments from Exchange and log 
 Download from Chrome Web Store: <https://chrome.google.com/webstore/detail/autotempo/gngdkgambfhhmhnklnbmghpknfhljgnf>.
 
 This project is a port of <https://github.com/dst-hackathon/autotempo/>.
+
+[![Circle CI](https://circleci.com/gh/pawitp/autotempo-chrome.svg?style=svg)](https://circleci.com/gh/pawitp/autotempo-chrome)
