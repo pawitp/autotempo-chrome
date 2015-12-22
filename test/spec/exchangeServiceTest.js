@@ -36,7 +36,7 @@
       configService = $injector.get('configService');
     }));
 
-    it('should support send test/xml content type', function() {
+    it('should send test/xml content type', function() {
       $httpBackend
         .expect('POST', 'https://mail.example.com/ews/exchange.asmx', undefined, function(headers) {
           headers['Content-Type'].should.equal('text/xml');
