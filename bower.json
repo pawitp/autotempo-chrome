@@ -12,9 +12,10 @@
     "chai": "~3.4.2",
     "angular-mocks": "~1.4.8",
     "chai-as-promised": "~5.1.0",
-    "bind-polyfill": "~1.0.0",
     "sinonjs": "~1.17.1",
-    "sinon-chai": "~2.8.0"
+    "sinon-chai": "~2.8.0",
+    "es6-shim": "~0.34.0",
+    "es5-shim": "~4.4.1"
   },
   "private": true
 }
