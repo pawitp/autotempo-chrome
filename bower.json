@@ -13,7 +13,8 @@
     "angular-mocks": "~1.4.8",
     "chai-as-promised": "~5.1.0",
     "bind-polyfill": "~1.0.0",
-    "sinonjs": "~1.17.1"
+    "sinonjs": "~1.17.1",
+    "sinon-chai": "~2.8.0"
   },
   "private": true
 }

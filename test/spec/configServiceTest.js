@@ -26,6 +26,9 @@
           set: sinon.stub()
         }
       };
+
+      // Mock set callback
+      chrome.storage.local.set.yields();
     });
 
     describe('initConfig', function() {
@@ -69,12 +72,70 @@
     });
 
     describe('saveConfig', function() {
-      it('should append "/" to URLs if it does not end in "/"');
-      it('should not append "/" to URLs if it ends in "/"');
-      it('should prepend "http://" to URLs if does not have a protocol');
-      it('should not prepend "http://" to URLs if it starts with "http://"');
-      it('should not prepend "http://" to URLs if it starts with "https://"');
-      it('should save configuration in local storage');
+      it('should save configuration in local storage', function() {
+        configService.saveConfig({
+          exchange: { url: '' },
+          jira: { url: '' }
+        });
+
+        chrome.storage.local.set.should.have.been.called;
+      });
+
+      it('should append "/" to URLs if it does not end in "/"', function() {
+        configService.saveConfig({
+          exchange: { url: 'https://mail.example.com' },
+          jira: { url: 'http://jira.example.com' }
+        });
+
+        chrome.storage.local.set.should.have.been.calledWith({
+          config: {
+            exchange: { url: 'https://mail.example.com/' },
+            jira: { url: 'http://jira.example.com/' }
+          }
+        });
+      });
+
+      it('should prepend "http://" to URLs if does not have a protocol', function() {
+        configService.saveConfig({
+          exchange: { url: 'mail.example.com/' },
+          jira: { url: 'jira.example.com/' }
+        });
+
+        chrome.storage.local.set.should.have.been.calledWith({
+          config: {
+            exchange: { url: 'http://mail.example.com/' },
+            jira: { url: 'http://jira.example.com/' }
+          }
+        });
+      });
+
+      it('should not modify URLs if they are already correct', function() {
+        configService.saveConfig({
+          exchange: { url: 'https://mail.example.com/' },
+          jira: { url: 'http://jira.example.com/' }
+        });
+
+        chrome.storage.local.set.should.have.been.calledWith({
+          config: {
+            exchange: { url: 'https://mail.example.com/' },
+            jira: { url: 'http://jira.example.com/' }
+          }
+        });
+      });
+
+      it('should return a copy of the config in the promise', function() {
+        var config = {
+          exchange: { url: 'https://mail.example.com/' },
+          jira: { url: 'http://jira.example.com/2' }
+        };
+        var result = configService.saveConfig(config);
+
+        // We want same content, but not same object to prevent leaking internal structure
+        result.should.eventually.deep.equal(config);
+        result.should.not.eventually.equal(config);
+
+        $rootScope.$apply();
+      });
     });
 
     describe('getExchangeUrl', function() {
