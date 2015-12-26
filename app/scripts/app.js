@@ -60,8 +60,18 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', 
           return exchangeService.getExchangeAppointments(exchangeFolder, inputDate);
         })
         .then(function(appointments) {
-          // Calculate duration hours
+          // Calculate duration and add "durationHours"
           angular.forEach(appointments, function(appointment) {
+            appointment.duration = appointment.start - appointment.end;
+
+            Object.defineProperty(appointment, 'durationHours', {
+              get: function() {
+                return parseFloat(utils.secondsToHours(this.duration).toFixed(2));
+              },
+              set: function(newValue) {
+                this.duration = utils.hoursToSeconds(newValue);
+              }
+            });
             appointment.durationHours = utils.secondsToHours((appointment.end - appointment.start) / 1000);
           });
 
@@ -109,14 +119,11 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', 
         return;
       }
 
-      // TODO: get rid of durationHours and just use duration if possible
-      // TODO: standardize duration to either seconds or milliseconds
-      appointment.duration = utils.hoursToSeconds(appointment.durationHours);
-
       var result = {
         subject: appointment.subject,
         issueKey: appointment.logType.issueKey,
         accountKey: appointment.logType.accountKey,
+        // TODO: standardize duration to either seconds or milliseconds
         duration: appointment.duration * 1000,
         status: 'Queued'
       };
@@ -268,7 +275,7 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', 
       // Create "appointment" from quick log
       var appointment = {
         start: quickLog.date,
-        durationHours: quickLog.durationHours,
+        duration: utils.hoursToSeconds(quickLog.durationHours),
         subject: quickLog.comment,
         logType: quickLog.logType
       };

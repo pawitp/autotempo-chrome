@@ -36,7 +36,7 @@
               <th>Subject</th>
               <th>Start</th>
               <th>End</th>
-              <th>Duration</th>
+              <th>Hours</th>
               <th>My Response Type</th>
               <th>Log as</th>
             </tr>
@@ -44,7 +44,7 @@
               <td>{{ appointment.subject }}</td>
               <td>{{ appointment.start | date: "HH:mm" }}</td>
               <td>{{ appointment.end | date: "HH:mm" }}</td>
-              <td>{{ appointment.durationHours | number: 2 }} h</td>
+              <td><input type="number" class="form-control" step="0.01" data-ng-model="appointment.durationHours"></td>
               <td>{{ appointment.myResponseType }}</td>
               <td>
                 <select class="form-control"
