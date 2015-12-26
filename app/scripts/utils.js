@@ -18,5 +18,15 @@ utils.factory('utils', function() {
     return headers;
   };
 
+  service.secondsToHours = function(seconds) {
+    return seconds / 3600;
+  };
+
+  service.hoursToSeconds = function(hours) {
+    // Get rounded minutes first (no point logging with sub-minutes precision)
+    var minutes = Math.round(hours * 60);
+    return minutes * 60;
+  };
+
   return service;
 });

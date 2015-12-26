@@ -5,11 +5,12 @@ var myApp = angular.module('autoTempoApp', [
   'ngQueue',
   'exchangeService',
   'jiraService',
-  'configService'
+  'configService',
+  'utils'
 ]);
 
-myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', '$cacheFactory', '$uibModal', 'exchangeService', 'jiraService', 'configService',
-  function($scope, $timeout, $q, $queueFactory, $cacheFactory, $uibModal, exchangeService, jiraService, configService) {
+myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', '$cacheFactory', '$uibModal', 'exchangeService', 'jiraService', 'configService', 'utils',
+  function($scope, $timeout, $q, $queueFactory, $cacheFactory, $uibModal, exchangeService, jiraService, configService, utils) {
     $scope.exchangeLog = {
       inputDate: new Date(),
       appointments: []
@@ -261,7 +262,7 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', 
       // Create "appointment" from quick log
       var appointment = {
         start: quickLog.date,
-        end: addSeconds(quickLog.date, quickLog.durationHours * 3600),
+        end: addSeconds(quickLog.date, utils.hoursToSeconds(quickLog.durationHours)),
         subject: quickLog.comment,
         logType: quickLog.logType
       };
