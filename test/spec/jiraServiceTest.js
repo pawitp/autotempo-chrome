@@ -71,7 +71,7 @@
 
         jiraService.submitTempo({
           start: new Date('2015-12-26T08:39:12.540Z'),
-          end: new Date('2015-12-26T18:39:12.540Z'),
+          duration: 10000,
           subject: 'Subject',
           logType: {
             accountKey: 'ATT02',
@@ -97,7 +97,7 @@
 
         jiraService.submitTempo({
           start: new Date('2015-12-26T08:39:12.540Z'),
-          end: new Date('2015-12-26T18:39:12.540Z'),
+          duration: 36000,
           subject: 'Subject',
           logType: {
             accountKey: 'ATT02',
@@ -126,7 +126,7 @@
 
         jiraService.submitTempo({
           start: new Date('2015-12-26T08:39:12.540Z'),
-          end: new Date('2015-12-26T18:39:12.540Z'),
+          duration: 36000,
           subject: 'Subject',
           logType: {
             accountKey: 'ATT02',
@@ -155,7 +155,7 @@
 
         jiraService.submitTempo({
           start: new Date('2015-12-26T08:39:12.540Z'),
-          end: new Date('2015-12-26T18:39:12.540Z'),
+          duration: 36000,
           subject: 'Subject',
           logType: {
             accountKey: 'ATT02',

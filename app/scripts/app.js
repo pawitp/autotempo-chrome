@@ -60,7 +60,15 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', 
           return exchangeService.getExchangeAppointments(exchangeFolder, inputDate);
         })
         .then(function(appointments) {
+          // Calculate duration hours
+          angular.forEach(appointments, function(appointment) {
+            appointment.durationHours = utils.secondsToHours((appointment.end - appointment.start) / 1000);
+          });
+
+          // Auto match rules
           matchRules(appointments, $scope.logTypes);
+
+          // Populate to scope
           $scope.exchangeLog.error = undefined;
           $scope.exchangeLog.appointments = appointments;
         })
@@ -101,11 +109,15 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', 
         return;
       }
 
+      // TODO: get rid of durationHours and just use duration if possible
+      // TODO: standardize duration to either seconds or milliseconds
+      appointment.duration = utils.hoursToSeconds(appointment.durationHours);
+
       var result = {
         subject: appointment.subject,
         issueKey: appointment.logType.issueKey,
         accountKey: appointment.logType.accountKey,
-        duration: appointment.end - appointment.start,
+        duration: appointment.duration * 1000,
         status: 'Queued'
       };
 
@@ -250,19 +262,13 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', 
       }
     };
 
-    function addSeconds(date, seconds) {
-      var newDate = new Date(date);
-      newDate.setSeconds(newDate.getSeconds() + seconds);
-      return newDate;
-    }
-
     $scope.submitQuickLog = function() {
       var quickLog = $scope.quickLog;
 
       // Create "appointment" from quick log
       var appointment = {
         start: quickLog.date,
-        end: addSeconds(quickLog.date, utils.hoursToSeconds(quickLog.durationHours)),
+        durationHours: quickLog.durationHours,
         subject: quickLog.comment,
         logType: quickLog.logType
       };

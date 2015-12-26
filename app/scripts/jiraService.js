@@ -56,7 +56,7 @@ jiraService.factory('jiraService', ['$http', '$q', 'utils', 'configService',
     function createWorklog(appointment, existingEstimate) {
       var workLog = {
         dateStarted: formatDate(appointment.start),
-        timeSpentSeconds: Math.floor((appointment.end - appointment.start) / 1000),
+        timeSpentSeconds: appointment.duration,
         comment: appointment.subject,
         author: {
           name: configService.getJiraCredentials().username

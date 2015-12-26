@@ -44,7 +44,7 @@
               <td>{{ appointment.subject }}</td>
               <td>{{ appointment.start | date: "HH:mm" }}</td>
               <td>{{ appointment.end | date: "HH:mm" }}</td>
-              <td>{{ (appointment.end - appointment.start) / 3600000 | number: 2 }} h</td>
+              <td>{{ appointment.durationHours | number: 2 }} h</td>
               <td>{{ appointment.myResponseType }}</td>
               <td>
                 <select class="form-control"
