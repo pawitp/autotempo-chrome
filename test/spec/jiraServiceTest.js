@@ -60,22 +60,133 @@
     });
 
     describe('submitTempo', function() {
-      it('should send application/json content type');
-      it('should be able to submit worklogs for internal issue');
-      it('should be able to submit worklogs for non-internal issue with remaining estimate');
-      it('should submit 0 remaining estimate when remaining estimate is negative');
-    });
+      it('should send application/json content type', function() {
+        mockRemainingEstimateOfInternalIssue('INT-2');
 
-    describe('getRemainingEstimate', function() {
-      it('should return estimate for non-internal issues');
-      it('should return null for internal issues');
-      it('should throw error for non-403 response');
+        $httpBackend
+          .expect('POST', 'https://jira.example.com/rest/tempo-timesheets/3/worklogs/', undefined, function(headers) {
+            headers['Content-Type'].should.equal('application/json');
+            return true;
+          }).respond(500, '');
+
+        jiraService.submitTempo({
+          start: new Date('2015-12-26T08:39:12.540Z'),
+          end: new Date('2015-12-26T18:39:12.540Z'),
+          subject: 'Subject',
+          logType: {
+            accountKey: 'ATT02',
+            issueKey: 'INT-2'
+          }
+        });
+
+        $httpBackend.flush();
+      });
+
+      it('should be able to submit worklogs for internal issue', function() {
+        mockRemainingEstimateOfInternalIssue('INT-2');
+
+        $httpBackend
+          .expect('POST', 'https://jira.example.com/rest/tempo-timesheets/3/worklogs/', {
+            dateStarted: '2015-12-26T15:39:12',
+            timeSpentSeconds: 36000,
+            comment: 'Subject',
+            author: { name: 'username' },
+            issue: { key: 'INT-2' },
+            worklogAttributes: [{ key: '_Account_', value: 'ATT02' }]
+          }).respond({});
+
+        jiraService.submitTempo({
+          start: new Date('2015-12-26T08:39:12.540Z'),
+          end: new Date('2015-12-26T18:39:12.540Z'),
+          subject: 'Subject',
+          logType: {
+            accountKey: 'ATT02',
+            issueKey: 'INT-2'
+          }
+        });
+
+        $httpBackend.flush();
+      });
+
+      it('should be able to submit worklogs for non-internal issue with remaining estimate', function() {
+        mockRemainingEstimate('TP-2', 37000);
+
+        $httpBackend
+          .expect('POST', 'https://jira.example.com/rest/tempo-timesheets/3/worklogs/', {
+            dateStarted: '2015-12-26T15:39:12',
+            timeSpentSeconds: 36000,
+            comment: 'Subject',
+            author: { name: 'username' },
+            issue: {
+              key: 'TP-2',
+              remainingEstimateSeconds: 1000,
+            },
+            worklogAttributes: [{ key: '_Account_', value: 'ATT02' }]
+          }).respond({});
+
+        jiraService.submitTempo({
+          start: new Date('2015-12-26T08:39:12.540Z'),
+          end: new Date('2015-12-26T18:39:12.540Z'),
+          subject: 'Subject',
+          logType: {
+            accountKey: 'ATT02',
+            issueKey: 'TP-2'
+          }
+        });
+
+        $httpBackend.flush();
+      });
+
+      it('should submit 0 remaining estimate when remaining estimate is negative', function() {
+        mockRemainingEstimate('TP-2', 3000);
+
+        $httpBackend
+          .expect('POST', 'https://jira.example.com/rest/tempo-timesheets/3/worklogs/', {
+            dateStarted: '2015-12-26T15:39:12',
+            timeSpentSeconds: 36000,
+            comment: 'Subject',
+            author: { name: 'username' },
+            issue: {
+              key: 'TP-2',
+              remainingEstimateSeconds: 0,
+            },
+            worklogAttributes: [{ key: '_Account_', value: 'ATT02' }]
+          }).respond({});
+
+        jiraService.submitTempo({
+          start: new Date('2015-12-26T08:39:12.540Z'),
+          end: new Date('2015-12-26T18:39:12.540Z'),
+          subject: 'Subject',
+          logType: {
+            accountKey: 'ATT02',
+            issueKey: 'TP-2'
+          }
+        });
+
+        $httpBackend.flush();
+      });
     });
 
     afterEach(function() {
       $httpBackend.verifyNoOutstandingExpectation();
       $httpBackend.verifyNoOutstandingRequest();
     });
+
+    function mockRemainingEstimate(issue, estimate) {
+      $httpBackend.when('GET', 'https://jira.example.com/rest/api/2/issue/' + issue + '?fields=timetracking')
+        .respond({
+          fields: {
+            timetracking: {
+              remainingEstimateSeconds: estimate
+            }
+          }
+        });
+    }
+
+    function mockRemainingEstimateOfInternalIssue(issue) {
+      $httpBackend.when('GET', 'https://jira.example.com/rest/api/2/issue/' + issue + '?fields=timetracking')
+        .respond(403, '');
+    }
 
   });
 
