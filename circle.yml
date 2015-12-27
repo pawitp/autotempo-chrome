@@ -7,6 +7,8 @@ dependencies:
 test:
   override:
     - grunt
+    - mkdir -p $CIRCLE_TEST_REPORTS/junit/
+    - cp temp/test/*.xml $CIRCLE_TEST_REPORTS/junit/
 general:
   artifacts:
     - "package"
