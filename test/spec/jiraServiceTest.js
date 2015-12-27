@@ -210,7 +210,7 @@
         }).should.be.rejected;
 
         $httpBackend.flush();
-      })
+      });
     });
 
     afterEach(function() {
