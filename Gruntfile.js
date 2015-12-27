@@ -35,8 +35,8 @@ module.exports = function(grunt) {
         tasks: ['wiredep']
       },
       js: {
-        files: ['<%= config.app %>/scripts/{,*/}*.js'],
-        tasks: ['jshint'],
+        files: ['<%= config.app %>/scripts/{,*/}*.js', 'test/spec/{,*/}*.js'],
+        tasks: ['jshint', 'karma:unit:run'],
         options: {
           livereload: true
         }
@@ -127,7 +127,15 @@ module.exports = function(grunt) {
 
     // Mocha testing framework configuration options
     karma: {
+      // Option for use with grunt watch
       unit: {
+        configFile: 'karma.conf.js',
+        autoWatch: false,
+        background: true,
+        singleRun: false
+      },
+      // Option for use as a build process
+      once: {
         configFile: 'karma.conf.js',
         singleRun: true,
         reporters: ['dots', 'junit', 'coverage'],
@@ -353,12 +361,13 @@ module.exports = function(grunt) {
       'clean:' + platform,
       'concurrent:' + platform,
       'connect:' + platform,
+      'karma:unit:start',
       'watch'
     ]);
   });
 
   grunt.registerTask('test', [
-    'karma'
+    'karma:once'
   ]);
 
   grunt.registerTask('build', [
