@@ -14,11 +14,6 @@
     }));
 
     beforeEach(function() {
-      // Create global when running test on non-chrome browsers
-      if (angular.isUndefined(window.chrome)) {
-        window.chrome = {};
-      }
-
       // Initialize stub storage
       chrome.storage = {
         local: {

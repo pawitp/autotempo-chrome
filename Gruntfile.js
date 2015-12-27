@@ -92,15 +92,6 @@ module.exports = function(grunt) {
             '<%= config.app %>'
           ]
         }
-      },
-      test: {
-        options: {
-          open: false,
-          base: [
-            'test',
-            '<%= config.app %>'
-          ]
-        }
       }
     },
 
@@ -135,11 +126,13 @@ module.exports = function(grunt) {
     },
 
     // Mocha testing framework configuration options
-    mocha: {
-      all: {
-        options: {
-          run: true,
-          urls: ['http://localhost:<%= connect.options.port %>/index.html']
+    karma: {
+      unit: {
+        configFile: 'karma.conf.js',
+        singleRun: true,
+        reporters: ['dots', 'junit'],
+        junitReporter: {
+          outputDir: '../temp/test'
         }
       }
     },
@@ -147,7 +140,7 @@ module.exports = function(grunt) {
     // Automatically inject Bower components into the HTML file
     wiredep: {
       task: {
-        src: ['<%= config.app %>/index.html', 'test/index.html'],
+        src: ['<%= config.app %>/index.html', 'karma.conf.js'],
 
         options: {
           ignorePath: '<%= config.app %>/',
@@ -365,8 +358,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('test', [
-    'connect:test',
-    'mocha'
+    'karma'
   ]);
 
   grunt.registerTask('build', [
