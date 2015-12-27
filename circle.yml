@@ -9,6 +9,7 @@ test:
     - grunt
     - mkdir -p $CIRCLE_TEST_REPORTS/junit/
     - cp temp/test/*.xml $CIRCLE_TEST_REPORTS/junit/
+    - cp -R temp/coverage $CIRCLE_TEST_REPORTS/
 general:
   artifacts:
     - "package"

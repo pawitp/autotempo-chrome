@@ -130,7 +130,7 @@ module.exports = function(grunt) {
       unit: {
         configFile: 'karma.conf.js',
         singleRun: true,
-        reporters: ['dots', 'junit'],
+        reporters: ['dots', 'junit', 'coverage'],
         junitReporter: {
           outputDir: '../temp/test'
         }
