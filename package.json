@@ -1,6 +1,6 @@
 {
   "name": "autotempo-chrome",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "dependencies": {},
   "devDependencies": {
     "chai": "^3.4.1",
