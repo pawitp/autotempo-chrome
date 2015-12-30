@@ -76,6 +76,7 @@ module.exports = function(grunt) {
       },
       server: {
         options: {
+          open: false,
           middleware: function(connect) {
             return [
               connect.static('.tmp'),
@@ -143,6 +144,16 @@ module.exports = function(grunt) {
           outputDir: '../temp/test'
         }
       }
+    },
+
+    // Protractor E2E tests
+    protractor: {
+      options: {
+        configFile: 'protractor.conf.js',
+        keepAlive: true,
+        noColor: false,
+      },
+      e2e: {},
     },
 
     // Automatically inject Bower components into the HTML file
@@ -370,6 +381,11 @@ module.exports = function(grunt) {
     'karma:once'
   ]);
 
+  grunt.registerTask('e2e-test', [
+    'connect:server',
+    'protractor:e2e'
+  ]);
+
   grunt.registerTask('build', [
     'clean:dist',
     'chromeManifest:dist',
@@ -387,6 +403,7 @@ module.exports = function(grunt) {
   grunt.registerTask('default', [
     'newer:jshint',
     'test',
+    'e2e-test',
     'build'
   ]);
 };
