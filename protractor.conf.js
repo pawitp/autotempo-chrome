@@ -6,6 +6,7 @@ exports.config = {
     'browserName': 'chrome'
   },
   chromeOnly: true,
+  directConnect: true,
   baseUrl: 'http://localhost:8000/',
   framework: 'mocha',
   allScriptsTimeout: 11000
