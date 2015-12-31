@@ -175,7 +175,7 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', 
     };
 
     $scope.addLogType = function() {
-      $scope.configuration.config.logTypes.push({});
+      $scope.configuration.config.logTypes.push({ rules: [] });
     };
 
     $scope.deleteRule = function(rules, index) {
