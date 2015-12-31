@@ -21,7 +21,7 @@
   <div class="row">
     <div class="col-md-12">
       <uib-tabset>
-        <uib-tab heading="Log from Exchange">
+        <uib-tab heading="Log from Exchange" id="tagExchangeLog">
           <h3>
             Appointments
             <small class="pull-right form-inline">
@@ -58,7 +58,7 @@
           </div>
           <button data-ng-click="submitExchangeLog()" class="btn btn-primary">Log to tempo!</button>
         </uib-tab>
-        <uib-tab heading="Quick Log">
+        <uib-tab heading="Quick Log" id="tabQuickLog">
           <div class="row">
             <div class="col-md-12">
               <form role="form" data-ng-submit="submitQuickLog()">
@@ -87,7 +87,7 @@
             </div>
           </div>
         </uib-tab>
-        <uib-tab heading="Configuration" deselect="warnDirtyConfig()">
+        <uib-tab heading="Configuration" deselect="warnDirtyConfig()" id="tabConfiguration">
           <script type="text/ng-template" id="warnDirtyConfig.html">
             <div class="modal-header">
               <h3 class="modal-title">Do you want to save your configuration?</h3>
@@ -168,12 +168,12 @@
                           <option value="contains">contains</option>
                         </select>
                         <input class="form-control" data-ng-model="rule.value">
-                        <a href="" data-ng-click="deleteRule(logType.rules, $index)">Delete</a>
+                        <a href="" data-ng-click="deleteRule(logType.rules, $index)" class="btnDeleteRule">Delete</a>
                       </div>
-                      <a href="" data-ng-click="addRule(logType.rules)">Add</a>
+                      <a href="" data-ng-click="addRule(logType.rules)" class="btnAddRule">Add</a>
                     </td>
                     <td>
-                      <button data-ng-click="deleteLogType($index)" class="btn btn-danger">
+                      <button data-ng-click="deleteLogType($index)" class="btn btn-danger btnDeleteLogType">
                         <span class="glyphicon glyphicon-remove"></span>
                       </button>
                     </td>
@@ -185,14 +185,14 @@
                     <td></td>
                     <td></td>
                     <td>
-                      <button data-ng-click="addLogType()" class="btn btn-success">
+                      <button data-ng-click="addLogType()" class="btn btn-success" id="btnAddLogType">
                         <span class="glyphicon glyphicon-plus"></span>
                       </button>
                     </td>
                   </tr>
                 </table>
                 <span uib-tooltip="Your configurations are already saved" tooltip-enable="!configuration.configForm.$dirty" tooltip-placement="right">
-                  <button data-ng-click="saveConfig()" data-ng-disabled="!configuration.configForm.$dirty" class="btn btn-primary">Save</button>
+                  <button data-ng-click="saveConfig()" data-ng-disabled="!configuration.configForm.$dirty" class="btn btn-primary" id="btnSaveConfig">Save</button>
                 </span>
               </div>
             </div>
@@ -201,8 +201,8 @@
             <div class="col-md-12">
               <h3>Import/Export</h3>
               <p>
-                <button data-ng-click="importConfig()" class="btn btn-default">Import</button>
-                <button data-ng-click="exportConfig()" class="btn btn-default">Export</button>
+                <button data-ng-click="importConfig()" class="btn btn-default" id="btnImportConfig">Import</button>
+                <button data-ng-click="exportConfig()" class="btn btn-default" id="btnExportConfig">Export</button>
               </p>
               <textarea class="form-control" data-ng-model="configuration.importExport" placeholder="To import, paste here and press import. To export, press export and configuration will be displayed here."></textarea>
             </div>

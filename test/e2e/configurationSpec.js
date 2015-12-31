@@ -1,0 +1,74 @@
+var chai = require('chai');
+chai.should();
+chai.use(require('chai-as-promised'));
+
+Object.defineProperty(
+  protractor.promise.Promise.prototype,
+  'should',
+  Object.getOwnPropertyDescriptor(Object.prototype, 'should')
+);
+
+describe('Configuration', function() {
+  it('should save authentication configuration', function() {
+    $('#tabConfiguration a').click();
+    $('#exchangeUrl').sendKeys('https://mail.mycompany.com');
+    $('#exchangeUsername').sendKeys('mydomain\\myusername');
+    $('#exchangePassword').sendKeys('mypassword');
+    $('#jiraUrl').sendKeys('jira.mycompany.com');
+    $('#jiraUsername').sendKeys('myjirausername');
+    $('#jiraPassword').sendKeys('myjirapassword');
+
+    $('#btnSaveConfig').click();
+    $('#btnSaveConfig').isEnabled().should.eventually.be.false;
+    $('#jiraUrl').getAttribute('value').should.eventually.equal('http://jira.mycompany.com/');
+  });
+
+  it('should save log types configuration', function() {
+    $('#btnAddLogType').click();
+    var logTypes = element.all(by.repeater('logType in configuration.config.logTypes'));
+    var row = logTypes.get(0);
+    row.element(by.model('logType.name')).sendKeys('Test Issue 1');
+    row.element(by.model('logType.issueKey')).sendKeys('TP-1');
+    row.element(by.model('logType.accountKey')).sendKeys('ATT01');
+
+    $('#btnAddLogType').click();
+    var row = logTypes.get(1);
+    row.element(by.model('logType.name')).sendKeys('Test Issue 2');
+    row.element(by.model('logType.issueKey')).sendKeys('TP-2');
+    row.element(by.model('logType.accountKey')).sendKeys('ATT02');
+
+    $('#btnAddLogType').click();
+    var row = logTypes.get(2);
+    row.element(by.model('logType.name')).sendKeys('Test Issue 3');
+    row.element(by.model('logType.issueKey')).sendKeys('TP-3');
+    row.element(by.model('logType.accountKey')).sendKeys('ATT03');
+    row.element(by.css('.btnAddRule')).click();
+    row.element(by.model('rule.field')).element(by.css('option[value=subject]')).click();
+    row.element(by.model('rule.op')).element(by.css('option[value=contains]')).click();
+    row.element(by.model('rule.value')).sendKeys('test');
+
+    element.all(by.repeater('logType in configuration.config.logTypes')).count().should.eventually.equal(3);
+
+    $('#btnSaveConfig').click();
+    $('#btnSaveConfig').isEnabled().should.eventually.be.false;
+  });
+
+  it('should export configuration', function() {
+    $('#exchangeUrl').clear();
+    $('#exchangeUrl').sendKeys('https://testexport');
+    $('#btnSaveConfig').click();
+
+    $('#btnExportConfig').click();
+    element(by.model('configuration.importExport')).getAttribute('value').should.eventually.contains('testexport');
+  });
+
+  it('should import configuration', function() {
+    var importExport = element(by.model('configuration.importExport'));
+    importExport.clear();
+    importExport.sendKeys('{"exchange": {"url": "http://testexchangeurl/"}, "jira": {"url": "http://testjiraurl/"}}');
+    $('#btnImportConfig').click();
+
+    $('#exchangeUrl').getAttribute('value').should.eventually.equal('http://testexchangeurl/');
+    $('#jiraUrl').getAttribute('value').should.eventually.equal('http://testjiraurl/');
+  })
+});
