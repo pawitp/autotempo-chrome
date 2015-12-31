@@ -1,3 +1,6 @@
+/*jshint expr: true*/
+'use strict';
+
 var chai = require('chai');
 chai.should();
 chai.use(require('chai-as-promised'));
@@ -32,13 +35,13 @@ describe('Configuration', function() {
     row.element(by.model('logType.accountKey')).sendKeys('ATT01');
 
     $('#btnAddLogType').click();
-    var row = logTypes.get(1);
+    row = logTypes.get(1);
     row.element(by.model('logType.name')).sendKeys('Test Issue 2');
     row.element(by.model('logType.issueKey')).sendKeys('TP-2');
     row.element(by.model('logType.accountKey')).sendKeys('ATT02');
 
     $('#btnAddLogType').click();
-    var row = logTypes.get(2);
+    row = logTypes.get(2);
     row.element(by.model('logType.name')).sendKeys('Test Issue 3');
     row.element(by.model('logType.issueKey')).sendKeys('TP-3');
     row.element(by.model('logType.accountKey')).sendKeys('ATT03');
@@ -70,5 +73,5 @@ describe('Configuration', function() {
 
     $('#exchangeUrl').getAttribute('value').should.eventually.equal('http://testexchangeurl/');
     $('#jiraUrl').getAttribute('value').should.eventually.equal('http://testjiraurl/');
-  })
+  });
 });

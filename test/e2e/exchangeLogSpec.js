@@ -1,3 +1,6 @@
+/*jshint expr: true*/
+'use strict';
+
 var chai = require('chai');
 chai.should();
 chai.use(require('chai-as-promised'));
@@ -10,5 +13,5 @@ Object.defineProperty(
 
 describe('Exchange Log', function() {
   it('should fetch and display appointments from Exchange');
-  it('should log selected appointments to Tempo')
+  it('should log selected appointments to Tempo');
 });
