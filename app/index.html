@@ -21,12 +21,12 @@
   <div class="row">
     <div class="col-md-12">
       <uib-tabset>
-        <uib-tab heading="Log from Exchange" id="tagExchangeLog">
+        <uib-tab heading="Log from Exchange" id="tabExchangeLog">
           <h3>
             Appointments
             <small class="pull-right form-inline">
               <input type="date" class="form-control" data-ng-model="exchangeLog.inputDate" data-ng-change="fetchAppointments()">
-              <button data-ng-click="fetchAppointments()" class="btn btn-default">
+              <button data-ng-click="fetchAppointments()" class="btn btn-default" id="btnExchangeRefresh">
                 <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
               </button>
             </small>
@@ -56,7 +56,7 @@
           <div class="alert alert-danger" role="alert" data-ng-show="exchangeLog.error">
             Unable to connect to Exchange: {{ exchangeLog.error }}
           </div>
-          <button data-ng-click="submitExchangeLog()" class="btn btn-primary">Log to tempo!</button>
+          <button data-ng-click="submitExchangeLog()" class="btn btn-primary" id="btnExchangeSubmit">Log to tempo!</button>
         </uib-tab>
         <uib-tab heading="Quick Log" id="tabQuickLog">
           <div class="row">
@@ -82,7 +82,7 @@
                   <label for="quickComment">Comment</label>
                   <textarea class="form-control" id="quickComment" data-ng-model="quickLog.comment" data-ng-readonly="quickLog.commentReadOnly"></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary" id="quickSubmit">Submit</button>
               </form>
             </div>
           </div>
@@ -214,7 +214,7 @@
 
   <div class="row">
     <div class="col-md-12">
-      <h2>Results <small><a href="" data-ng-click="clearResult()">Clear</a></small></h2>
+      <h2>Results <small><a href="" data-ng-click="clearResult()" id="btnClearResult">Clear</a></small></h2>
       <table class="table table-condensed">
         <tr>
           <th>Comment</th>

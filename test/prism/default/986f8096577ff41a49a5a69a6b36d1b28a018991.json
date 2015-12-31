@@ -1,0 +1,36 @@
+{
+  "requestUrl": "/mock/jira/rest/tempo-timesheets/3/worklogs/",
+  "contentType": "application/javascript",
+  "statusCode": 200,
+  "data": {
+    "author": {
+        "avatar": "http://jira/secure/useravatar?size=small&ownerId=testuser",
+        "displayName": "Test User",
+        "name": "testuser",
+        "self": "http://jira/rest/api/2/user?username=testuser"
+    },
+    "comment": "asdf",
+    "dateStarted": "2015-12-06T21:57:18.000",
+    "id": 34234,
+    "issue": {
+        "id": 12412,
+        "issueType": {
+            "iconUrl": "http://jira/images/icons/issuetypes/task.png",
+            "name": "Task"
+        },
+        "key": "INT-31",
+        "projectId": 6122,
+        "remainingEstimateSeconds": 0,
+        "self": "http://jira/rest/api/2/issue/12412",
+        "summary": "Issue Summary"
+    },
+    "self": "http://jira/rest/tempo-timesheets/3/worklogs/1795802",
+    "timeSpentSeconds": 36000,
+    "worklogAttributes": [
+        {
+            "key": "_Account_",
+            "value": "ATT01"
+        }
+    ]
+  }
+}

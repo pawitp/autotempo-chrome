@@ -12,8 +12,11 @@ Object.defineProperty(
 );
 
 describe('Configuration', function() {
-  it('should save authentication configuration', function() {
+  before(function() {
     $('#tabConfiguration a').click();
+  });
+
+  it('should save authentication configuration', function() {
     $('#exchangeUrl').sendKeys('https://mail.mycompany.com');
     $('#exchangeUsername').sendKeys('mydomain\\myusername');
     $('#exchangePassword').sendKeys('mypassword');

@@ -87,6 +87,28 @@ module.exports = function(grunt) {
             '<%= config.app %>'
           ]
         }
+      },
+      prism: {
+        options: {
+          port: 9001,
+          open: false,
+          middleware: function() {
+            return [
+              require('grunt-connect-prism/middleware')
+            ];
+          }
+        }
+      },
+    },
+
+    // Prism mock
+    prism: {
+      options: {
+        mode: 'mock',
+        host: 'localhost',
+        port: 80,
+        context: '/mock',
+        mocksPath: 'test/prism'
       }
     },
 
@@ -376,6 +398,8 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('e2e-test', [
+    'prism',
+    'connect:prism',
     'protractor:e2e'
   ]);
 

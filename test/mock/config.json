@@ -1,0 +1,37 @@
+{
+    "exchange": {
+        "url": "http://localhost:9001/mock/exchange/"
+    },
+    "jira": {
+        "url": "http://localhost:9001/mock/jira/"
+    },
+    "logTypes": [
+        {
+            "accountKey": "ATT01",
+            "issueKey": "TP-1",
+            "name": "Test Issue 1",
+            "override": {},
+            "rules": []
+        },
+        {
+            "accountKey": "ATT02",
+            "issueKey": "TP-2",
+            "name": "Test Issue 2",
+            "override": {},
+            "rules": []
+        },
+        {
+            "accountKey": "ATT03",
+            "issueKey": "TP-3",
+            "name": "Test Issue 3",
+            "override": {},
+            "rules": [
+                {
+                    "field": "subject",
+                    "op": "contains",
+                    "value": "test3"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,6 @@
+{
+  "requestUrl": "/mock/jira/rest/api/2/issue/TP-1?fields=timetracking",
+  "contentType": "applicaiton/json",
+  "statusCode": 403,
+  "data": {}
+}

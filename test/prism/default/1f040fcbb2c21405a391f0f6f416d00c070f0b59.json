@@ -1,0 +1,6 @@
+{
+  "requestUrl": "/mock/jira/rest/tempo-rest/1.0/accounts/json/billingKeyList/TP-1?callback=fn",
+  "contentType": "application/javascript",
+  "statusCode": 200,
+  "data": "fn({\"values\":[{\"key\":\"ATT01\",\"value\":\"ATT01 - Test Account 1\",\"global\":true,\"selected\":false},{\"key\":\"ATT02\",\"value\":\"ATT02 - Test Account 2\",\"global\":true,\"selected\":false},{\"key\":\"ATT03\",\"value\":\"ATT03 - Test Account 3\",\"global\":true,\"selected\":true})"
+}

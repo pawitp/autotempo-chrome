@@ -18,5 +18,5 @@
     "strict": true,
     "trailing": true,
     "smarttabs": true,
-    "predef": ["chrome", "angular", "describe", "it", "beforeEach", "afterEach", "inject", "expect", "sinon", "$", "protractor", "by", "element", "browser", "proxy"]
+    "predef": ["chrome", "angular", "describe", "it", "before", "beforeEach", "afterEach", "inject", "expect", "sinon", "$", "protractor", "by", "element", "browser", "proxy"]
 }
