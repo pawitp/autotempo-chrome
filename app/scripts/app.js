@@ -170,6 +170,16 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', 
       });
     };
 
+    $scope.exchangeTotalHours = function() {
+      var total = 0;
+      angular.forEach($scope.exchangeLog.appointments, function(appointment) {
+        if (appointment.logType.issueKey !== undefined) {
+          total += appointment.durationHours;
+        }
+      });
+      return total;
+    };
+
     $scope.deleteLogType = function(index) {
       $scope.configuration.config.logTypes.splice(index, 1);
     };

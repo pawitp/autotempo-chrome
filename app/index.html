@@ -56,7 +56,9 @@
           <div class="alert alert-danger" role="alert" data-ng-show="exchangeLog.error">
             Unable to connect to Exchange: {{ exchangeLog.error }}
           </div>
-          <button data-ng-click="submitExchangeLog()" class="btn btn-primary" id="btnExchangeSubmit">Log to tempo!</button>
+          <span uib-tooltip="Please select appointments to log" tooltip-enable="exchangeTotalHours() == 0" tooltip-placement="right">
+            <button data-ng-click="submitExchangeLog()" data-ng-disabled="exchangeTotalHours() == 0" class="btn btn-primary" id="btnExchangeSubmit">Submit {{ exchangeTotalHours() }} hours</button>
+          </span>
         </uib-tab>
         <uib-tab heading="Quick Log" id="tabQuickLog">
           <div class="row">

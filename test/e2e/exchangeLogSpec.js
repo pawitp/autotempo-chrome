@@ -40,4 +40,20 @@ describe('Exchange Log', function() {
 
     element.all(by.repeater('result in results')).count().should.eventually.equal(2);
   });
+
+  it('should show total number of hours in log button', function() {
+    var appointments = element.all(by.repeater('appointment in exchangeLog.appointments'));
+    $('#btnExchangeSubmit').getText().should.eventually.equal('Submit 12 hours');
+    appointments.get(0).element(by.model('appointment.logType')).element(by.css('option[value="Test Issue 1"]')).click();
+    $('#btnExchangeSubmit').getText().should.eventually.equal('Submit 24 hours');
+    $('#btnExchangeSubmit').isEnabled().should.eventually.be.true;
+  });
+
+  it('should disable log button when no appointments are selected', function() {
+    var appointments = element.all(by.repeater('appointment in exchangeLog.appointments'));
+    appointments.get(2).element(by.model('appointment.logType')).element(by.css('option[value="Do not log"]')).click();
+    $('#btnExchangeSubmit').getText().should.eventually.equal('Submit 0 hours');
+    $('#btnExchangeSubmit').isEnabled().should.eventually.be.false;
+  });
+
 });
