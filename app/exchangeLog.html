@@ -1,0 +1,37 @@
+<h3>
+  Appointments
+  <small class="pull-right form-inline">
+    <input type="date" class="form-control" data-ng-model="exchangeLog.inputDate" data-ng-change="fetchAppointments()">
+    <button data-ng-click="fetchAppointments()" class="btn btn-default" id="btnExchangeRefresh">
+      <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+    </button>
+  </small>
+</h3>
+<table class="table table-condensed">
+  <tr>
+    <th>Subject</th>
+    <th>Start</th>
+    <th>End</th>
+    <th>Hours</th>
+    <th>My Response Type</th>
+    <th>Log as</th>
+  </tr>
+  <tr data-ng-repeat="appointment in exchangeLog.appointments">
+    <td>{{ appointment.subject }}</td>
+    <td>{{ appointment.start | date: "HH:mm" }}</td>
+    <td>{{ appointment.end | date: "HH:mm" }}</td>
+    <td><input type="number" class="form-control" step="0.01" data-ng-model="appointment.durationHours"></td>
+    <td>{{ appointment.myResponseType }}</td>
+    <td>
+      <select class="form-control"
+              data-ng-options="type.name for type in logTypes track by type.name"
+              data-ng-model="appointment.logType"></select>
+    </td>
+  </tr>
+</table>
+<div class="alert alert-danger" role="alert" data-ng-show="exchangeLog.error">
+  Unable to connect to Exchange: {{ exchangeLog.error }}
+</div>
+<span uib-tooltip="Please select appointments to log" tooltip-enable="exchangeTotalHours() == 0" tooltip-placement="right">
+  <button data-ng-click="submitExchangeLog()" data-ng-disabled="exchangeTotalHours() == 0" class="btn btn-primary" id="btnExchangeSubmit">Submit {{ exchangeTotalHours() }} hours</button>
+</span>
