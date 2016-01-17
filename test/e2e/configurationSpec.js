@@ -77,4 +77,33 @@ describe('Configuration', function() {
     $('#exchangeUrl').getAttribute('value').should.eventually.equal('http://testexchangeurl/');
     $('#jiraUrl').getAttribute('value').should.eventually.equal('http://testjiraurl/');
   });
+
+  it('should show popup when trying to exit configuration screen without saving and save changes when Yes is selected', function() {
+    $('#exchangeUsername').clear();
+    $('#exchangeUsername').sendKeys('testpopupyes');
+
+    $('#tabExchangeLog a').click();
+    $('#warnDirtyConfig').isDisplayed().should.eventually.be.true;
+
+    $('#warnDirtyConfig .btn-primary').click();
+    $('#warnDirtyConfig').isPresent().should.eventually.be.false;
+
+    $('#tabConfiguration a').click();
+    $('#exchangeUsername').getAttribute('value').should.eventually.equal('testpopupyes');
+  });
+
+  it('should show popup when trying to exit configuration screen without saving and discard changes when No is selected', function() {
+    $('#exchangeUsername').clear();
+    $('#exchangeUsername').sendKeys('testpopupno');
+
+    $('#tabExchangeLog a').click();
+    $('#warnDirtyConfig').isDisplayed().should.eventually.be.true;
+
+    $('#warnDirtyConfig .btn-warning').click();
+    $('#warnDirtyConfig').isPresent().should.eventually.be.false;
+
+    $('#tabConfiguration a').click();
+    $('#exchangeUsername').getAttribute('value').should.eventually.not.equal('testpopupno');
+  });
+
 });

@@ -256,8 +256,13 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', 
           // Save
           $scope.saveConfig();
         }, function () {
-          // Not saved
+          // Not saved - reset values on config page
           console.log('Configuration not saved');
+
+          configService.initConfig().then(function(config) {
+            $scope.configuration.config = config;
+            $scope.configuration.configForm.$setPristine();
+          });
         });
       }
     };

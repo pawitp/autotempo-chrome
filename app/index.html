@@ -91,12 +91,14 @@
         </uib-tab>
         <uib-tab heading="Configuration" deselect="warnDirtyConfig()" id="tabConfiguration">
           <script type="text/ng-template" id="warnDirtyConfig.html">
-            <div class="modal-header">
-              <h3 class="modal-title">Do you want to save your configuration?</h3>
-            </div>
-            <div class="modal-footer">
-              <button class="btn btn-primary" type="button" ng-click="ok()">Yes</button>
-              <button class="btn btn-warning" type="button" ng-click="cancel()">No</button>
+            <div id="warnDirtyConfig">
+              <div class="modal-header">
+                <h3 class="modal-title">Do you want to save your configuration?</h3>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-primary" type="button" ng-click="ok()">Yes</button>
+                <button class="btn btn-warning" type="button" ng-click="cancel()">No</button>
+              </div>
             </div>
           </script>
           <form name="configuration.configForm">
