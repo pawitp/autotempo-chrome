@@ -44,8 +44,15 @@ describe('Exchange Log', function() {
   it('should show total number of hours in log button', function() {
     var appointments = element.all(by.repeater('appointment in exchangeLog.appointments'));
     $('#btnExchangeSubmit').getText().should.eventually.equal('Submit 12 hours');
+
     appointments.get(0).element(by.model('appointment.logType')).element(by.css('option[value="Test Issue 1"]')).click();
     $('#btnExchangeSubmit').getText().should.eventually.equal('Submit 24 hours');
+
+    appointments.get(0).element(by.model('appointment.durationHours')).clear().sendKeys('0.33');
+    appointments.get(2).element(by.model('appointment.durationHours')).clear().sendKeys('0.5');
+    // Should not be "0.8300000000000001"
+    $('#btnExchangeSubmit').getText().should.eventually.equal('Submit 0.83 hours');
+
     $('#btnExchangeSubmit').isEnabled().should.eventually.be.true;
   });
 

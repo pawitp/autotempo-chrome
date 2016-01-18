@@ -174,10 +174,10 @@ myApp.controller('AppController', ['$scope', '$timeout', '$q', '$queueFactory', 
       var total = 0;
       angular.forEach($scope.exchangeLog.appointments, function(appointment) {
         if (appointment.logType.issueKey !== undefined) {
-          total += appointment.durationHours;
+          total += appointment.duration;
         }
       });
-      return total;
+      return parseFloat(utils.secondsToHours(total).toFixed(2));
     };
 
     $scope.deleteLogType = function(index) {
