@@ -1,5 +1,6 @@
 exports.config = {
   specs: [
+    'test/e2e/run_first/initSpec.js',
     'test/e2e/*.js'
   ],
   capabilities: {
