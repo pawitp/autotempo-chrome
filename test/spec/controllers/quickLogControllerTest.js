@@ -87,6 +87,17 @@
       });
     });
 
+    describe('isToday', function() {
+      it('should return true for today', function() {
+        vm.date = new Date();
+        vm.isToday().should.be.true;
+      });
+      it('should return false for different day', function() {
+        vm.date = new Date("2011-01-01");
+        vm.isToday().should.be.false;
+      });
+    });
+
   });
 
 })();

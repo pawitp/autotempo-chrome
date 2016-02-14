@@ -103,6 +103,10 @@ exchangeLogController.controller('ExchangeLogController', ['$scope', '$rootScope
       return parseFloat(utils.secondsToHours(total).toFixed(2));
     };
 
+    vm.isToday = function() {
+      return utils.isSameDay(vm.inputDate, new Date());
+    };
+
     // Init
     $scope.$on('configChanged', function(event, config) {
       vm.logTypes = angular.copy(config.logTypes);

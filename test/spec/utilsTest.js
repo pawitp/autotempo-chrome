@@ -62,6 +62,21 @@
       });
     });
 
+    describe('isSameDay', function() {
+      it('should return true for same day', function() {
+        var date1 = new Date("2015-01-02");
+        var date2 = new Date("2015-01-02");
+
+        utils.isSameDay(date1, date2).should.be.true;
+      });
+      it('should return false for differnet days', function() {
+        var date1 = new Date("2015-01-02");
+        var date2 = new Date("2015-02-02");
+
+        utils.isSameDay(date1, date2).should.be.false;
+      });
+    });
+
   });
 
 })();

@@ -2,7 +2,7 @@
   <h3>
     Appointments
     <small class="pull-right form-inline">
-      <input type="date" class="form-control" data-ng-model="exchangeLog.inputDate" data-ng-change="exchangeLog.fetchAppointments()">
+      <input type="date" class="form-control" data-ng-model="exchangeLog.inputDate" id="exchangeLogDate" data-ng-change="exchangeLog.fetchAppointments()">
       <button data-ng-click="exchangeLog.fetchAppointments()" class="btn btn-default" id="btnExchangeRefresh">
         <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
       </button>
@@ -35,5 +35,8 @@
   </div>
   <span uib-tooltip="Please select appointments to log" tooltip-enable="exchangeLog.exchangeTotalHours() == 0" tooltip-placement="right">
     <button data-ng-click="exchangeLog.submitExchangeLog()" data-ng-disabled="exchangeLog.exchangeTotalHours() == 0" class="btn btn-primary" id="btnExchangeSubmit">Submit {{ exchangeLog.exchangeTotalHours() }} hours</button>
+  </span>
+  <span class="alert-warning" role="alert" id="exchangeLogWarnDate" data-ng-show="!exchangeLog.isToday()">
+    Warning: You are about to log work for a past or future date.
   </span>
 </div>

@@ -46,4 +46,13 @@ describe('Quick Log', function() {
     $('#quickLogType option[value="Do not log"]').click();
     $('#quickSubmit').isEnabled().should.eventually.be.false;
   });
+
+  it('should not display warning when logging for today', function() {
+    $('#quickLogWarnDate').isDisplayed().should.eventually.be.false;
+  });
+
+  it('should display warning when logging for a different date', function() {
+    $('#quickDate').sendKeys('02-01-2016');
+    $('#quickLogWarnDate').isDisplayed().should.eventually.be.true;
+  });
 });

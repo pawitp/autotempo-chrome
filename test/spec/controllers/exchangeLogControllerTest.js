@@ -206,6 +206,17 @@
       });
     });
 
+    describe('isToday', function() {
+      it('should return true for today', function() {
+        vm.inputDate = new Date();
+        vm.isToday().should.be.true;
+      });
+      it('should return false for different day', function() {
+        vm.inputDate = new Date("2011-01-01");
+        vm.isToday().should.be.false;
+      });
+    });
+
     function mockAppointments() {
       // TODO: This duplicates main code
       vm.appointments = angular.copy(APPOINTMENTS);

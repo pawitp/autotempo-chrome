@@ -63,4 +63,13 @@ describe('Exchange Log', function() {
     $('#btnExchangeSubmit').isEnabled().should.eventually.be.false;
   });
 
+  it('should not display warning when logging for today', function() {
+    $('#exchangeLogWarnDate').isDisplayed().should.eventually.be.false;
+  });
+
+  it('should display warning when logging for a different date', function() {
+    $('#exchangeLogDate').sendKeys('02-01-2016');
+    $('#exchangeLogWarnDate').isDisplayed().should.eventually.be.true;
+  });
+
 });

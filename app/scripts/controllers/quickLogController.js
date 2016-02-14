@@ -9,9 +9,9 @@ var quickLogController = angular.module('quickLogController', [
 quickLogController.controller('QuickLogController', ['$scope', '$rootScope', 'tempoLogService', 'utils',
   function($scope, $rootScope, tempoLogService, utils) {
     var vm = this;
+    vm.date = new Date();
 
     function clearQuickLog() {
-      vm.date = angular.isDefined(vm.date) ? vm.date : new Date();
       vm.logType = vm.logTypes[0];
       vm.durationHours = 0;
     }
@@ -36,6 +36,10 @@ quickLogController.controller('QuickLogController', ['$scope', '$rootScope', 'te
 
       $rootScope.$broadcast('result', tempoLogService.submit(appointment));
       clearQuickLog();
+    };
+
+    vm.isToday = function() {
+      return utils.isSameDay(vm.date, new Date());
     };
 
     $scope.$on('configChanged', function(event, config) {
