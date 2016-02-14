@@ -14,7 +14,7 @@ Object.defineProperty(
 describe('Quick Log', function() {
   before(function() {
     $('#tabConfiguration a').click();
-    var importExport = element(by.model('configuration.importExport'));
+    var importExport = element(by.model('vm.importExport'));
     importExport.clear();
     importExport.sendKeys(JSON.stringify(require('../mock/config.json')));
     $('#btnImportConfig').click();
@@ -30,8 +30,20 @@ describe('Quick Log', function() {
     $('#quickLogType option[value="Test Issue 1"]').click();
     $('#quickDuration').sendKeys('1.5');
     $('#quickComment').sendKeys('Test Comment');
+    $('#quickComment').getAttribute('readonly').should.eventually.be.null;
     $('#quickSubmit').click();
 
-    element.all(by.repeater('result in results')).count().should.eventually.equal(1);
+    element.all(by.repeater('result in rc.results')).count().should.eventually.equal(1);
+  });
+
+  it('should disable custom comment when overridden', function() {
+    $('#quickLogType option[value="Test Issue 2"]').click();
+    $('#quickComment').getAttribute('value').should.eventually.equal('override_subj');
+    $('#quickComment').getAttribute('readonly').should.eventually.equal('true');
+  });
+
+  it('should disable log button when no type is selected', function() {
+    $('#quickLogType option[value="Do not log"]').click();
+    $('#quickSubmit').isEnabled().should.eventually.be.false;
   });
 });

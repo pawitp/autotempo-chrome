@@ -14,7 +14,7 @@ Object.defineProperty(
 describe('Exchange Log', function() {
   before(function() {
     $('#tabConfiguration a').click();
-    var importExport = element(by.model('configuration.importExport'));
+    var importExport = element(by.model('vm.importExport'));
     importExport.clear();
     importExport.sendKeys(JSON.stringify(require('../mock/config.json')));
     $('#btnImportConfig').click();
@@ -38,7 +38,7 @@ describe('Exchange Log', function() {
     appointments.get(0).element(by.model('appointment.logType')).element(by.css('option[value="Test Issue 1"]')).click();
     $('#btnExchangeSubmit').click();
 
-    element.all(by.repeater('result in results')).count().should.eventually.equal(2);
+    element.all(by.repeater('result in rc.results')).count().should.eventually.equal(2);
   });
 
   it('should show total number of hours in log button', function() {

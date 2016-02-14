@@ -4,7 +4,7 @@
 
   describe('jiraService', function() {
 
-    var $httpBackend, jiraService;
+    var $httpBackend, $q, jiraService;
 
     beforeEach(module('jiraService'));
 
@@ -28,6 +28,7 @@
 
     beforeEach(inject(function($injector) {
       $httpBackend = $injector.get('$httpBackend');
+      $q = $injector.get('$q');
       jiraService = $injector.get('jiraService');
     }));
 
@@ -44,16 +45,19 @@
     });
 
     describe('getAccountList', function() {
-      it('should return list of accounts', function() {
+      it('should return list of accounts', function(done) {
         $httpBackend.expect('GET', 'https://jira.example.com/rest/tempo-rest/1.0/accounts/json/billingKeyList/INT-123?callback=fn')
           .respond('fn({"values":[{"key":"ATT01","value":"ATT01 - Test 01","global":true,"selected":false},{"key":"ATT02","value":"ATT02 - Test 02","global":true,"selected":false}]})');
 
         var result = jiraService.getAccountList('INT-123');
-        result.should.eventually.have.length.of(2);
-        result.should.eventually.have.deep.property('[0].key', 'ATT01');
-        result.should.eventually.have.deep.property('[0].value', 'ATT01 - Test 01');
-        result.should.eventually.have.deep.property('[1].key', 'ATT02');
-        result.should.eventually.have.deep.property('[1].value', 'ATT02 - Test 02');
+
+        $q.all([
+          result.should.eventually.have.length.of(2),
+          result.should.eventually.have.deep.property('[0].key', 'ATT01'),
+          result.should.eventually.have.deep.property('[0].value', 'ATT01 - Test 01'),
+          result.should.eventually.have.deep.property('[1].key', 'ATT02'),
+          result.should.eventually.have.deep.property('[1].value', 'ATT02 - Test 02')
+        ]).should.notify(done);
 
         $httpBackend.flush();
       });

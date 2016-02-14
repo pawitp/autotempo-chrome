@@ -17,7 +17,7 @@ describe('Configuration', function() {
   });
 
   it('should save authentication configuration', function() {
-    $('#exchangeUrl').sendKeys('https://mail.mycompany.com');
+    $('#exchangeUrl').sendKeys('http://localhost:9001');
     $('#exchangeUsername').sendKeys('mydomain\\myusername');
     $('#exchangePassword').sendKeys('mypassword');
     $('#jiraUrl').sendKeys('jira.mycompany.com');
@@ -31,7 +31,7 @@ describe('Configuration', function() {
 
   it('should save log types configuration', function() {
     $('#btnAddLogType').click();
-    var logTypes = element.all(by.repeater('logType in configuration.config.logTypes'));
+    var logTypes = element.all(by.repeater('logType in vm.config.logTypes'));
     var row = logTypes.get(0);
     row.element(by.model('logType.name')).sendKeys('Test Issue 1');
     row.element(by.model('logType.issueKey')).sendKeys('TP-1');
@@ -53,7 +53,7 @@ describe('Configuration', function() {
     row.element(by.model('rule.op')).element(by.css('option[value=contains]')).click();
     row.element(by.model('rule.value')).sendKeys('test');
 
-    element.all(by.repeater('logType in configuration.config.logTypes')).count().should.eventually.equal(3);
+    element.all(by.repeater('logType in vm.config.logTypes')).count().should.eventually.equal(3);
 
     $('#btnSaveConfig').click();
     $('#btnSaveConfig').isEnabled().should.eventually.be.false;
@@ -61,20 +61,20 @@ describe('Configuration', function() {
 
   it('should export configuration', function() {
     $('#exchangeUrl').clear();
-    $('#exchangeUrl').sendKeys('https://testexport');
+    $('#exchangeUrl').sendKeys('http://localhost:9001/testexport');
     $('#btnSaveConfig').click();
 
     $('#btnExportConfig').click();
-    element(by.model('configuration.importExport')).getAttribute('value').should.eventually.contains('testexport');
+    element(by.model('vm.importExport')).getAttribute('value').should.eventually.contains('testexport');
   });
 
   it('should import configuration', function() {
-    var importExport = element(by.model('configuration.importExport'));
+    var importExport = element(by.model('vm.importExport'));
     importExport.clear();
-    importExport.sendKeys('{"exchange": {"url": "http://testexchangeurl/"}, "jira": {"url": "http://testjiraurl/"}}');
+    importExport.sendKeys('{"exchange": {"url": "http://localhost:9001/testimport/"}, "jira": {"url": "http://testjiraurl/"}}');
     $('#btnImportConfig').click();
 
-    $('#exchangeUrl').getAttribute('value').should.eventually.equal('http://testexchangeurl/');
+    $('#exchangeUrl').getAttribute('value').should.eventually.equal('http://localhost:9001/testimport/');
     $('#jiraUrl').getAttribute('value').should.eventually.equal('http://testjiraurl/');
   });
 

@@ -1,0 +1,22 @@
+<div data-ng-controller="ResultController as rc">
+  <h2>Results <small><a href="" data-ng-click="rc.clearResult()" id="btnClearResult">Clear</a></small></h2>
+  <table class="table table-condensed">
+    <tr>
+      <th>Comment</th>
+      <th>Issue</th>
+      <th>Account</th>
+      <th>Duration</th>
+      <th>Remaining Estimate</th>
+      <th>Status</th>
+    </tr>
+    <tr data-ng-repeat="result in rc.results" data-ng-class="result.style">
+      <td>{{ result.subject }}</td>
+      <td>{{ result.issueKey }} {{ result.response.issue.summary }}</td>
+      <td data-ng-if="!result.accountDescription">{{ result.accountKey }}</td>
+      <td data-ng-if="result.accountDescription">{{ result.accountDescription }}</td>
+      <td>{{ result.duration / 3600000 | number : 2}} h</td>
+      <td><span data-ng-if="result.response.issue.remainingEstimateSeconds">{{ result.response.issue.remainingEstimateSeconds / 3600 | number : 2}} h</span></td>
+      <td uib-tooltip="{{ result.statusTooltip }}">{{ result.status }}</td>
+    </tr>
+  </table>
+</div>

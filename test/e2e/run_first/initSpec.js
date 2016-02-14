@@ -18,6 +18,7 @@ describe('Initialization', function() {
     browser.manage().logs().get('browser').then(function(browserLogs) {
       browserLogs.forEach(function(log) {
         if (log.message.includes('history.pushState is not available in packaged apps.') ||
+          log.message.includes('history.state is not available in packaged apps.') ||
           log.message.includes('exchange.asmx 0:0 Failed to load resource')) {
           // Expected errors
           return;

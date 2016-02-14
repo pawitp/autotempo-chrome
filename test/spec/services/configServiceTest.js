@@ -4,13 +4,14 @@
 
   describe('configService', function() {
 
-    var configService, $rootScope;
+    var configService, $rootScope, $q;
 
     beforeEach(module('configService'));
 
     beforeEach(inject(function($injector) {
       configService = $injector.get('configService');
       $rootScope = $injector.get('$rootScope');
+      $q = $injector.get('$q');
     }));
 
     beforeEach(function() {
@@ -27,40 +28,47 @@
     });
 
     describe('initConfig', function() {
-      it('should load existing configuration from local storage', function() {
+      it('should load existing configuration from local storage', function(done) {
         mockLocalStorage({
           test: 'test1'
         });
 
-        configService.initConfig().should.eventually.have.property('test', 'test1');
+        var config = configService.initConfig();
+        config.should.eventually.have.property('test', 'test1').and.notify(done);
 
         $rootScope.$apply();
       });
 
-      it('should create empty structure from config', function() {
+      it('should create empty structure from config', function(done) {
         mockLocalStorage({});
 
-        configService.initConfig().should.eventually.have.deep.property('exchange.url', '');
-        configService.initConfig().should.eventually.have.deep.property('exchange.username', '');
-        configService.initConfig().should.eventually.have.deep.property('exchange.password', '');
-        configService.initConfig().should.eventually.have.deep.property('jira.url', '');
-        configService.initConfig().should.eventually.have.deep.property('jira.username', '');
-        configService.initConfig().should.eventually.have.deep.property('jira.password', '');
-        configService.initConfig().should.eventually.have.property('logTypes').with.length.of(0);
+        var config = configService.initConfig();
+        $q.all([
+          config.should.eventually.have.deep.property('exchange.url', ''),
+          config.should.eventually.have.deep.property('exchange.username', ''),
+          config.should.eventually.have.deep.property('exchange.password', ''),
+          config.should.eventually.have.deep.property('jira.url', ''),
+          config.should.eventually.have.deep.property('jira.username', ''),
+          config.should.eventually.have.deep.property('jira.password', ''),
+          config.should.eventually.have.property('logTypes').with.length.of(0)
+        ]).should.notify(done);
 
         $rootScope.$apply();
       });
 
-      it('should full in any blank field in logType', function() {
+      it('should full in any blank field in logType', function(done) {
         mockLocalStorage({
           logTypes: [{}]
         });
 
-        configService.initConfig().should.eventually.have.deep.property('logTypes[0].name', '');
-        configService.initConfig().should.eventually.have.deep.property('logTypes[0].issueKey', '');
-        configService.initConfig().should.eventually.have.deep.property('logTypes[0].accountKey', '');
-        configService.initConfig().should.eventually.have.deep.property('logTypes[0].override').deep.equal({});
-        configService.initConfig().should.eventually.have.deep.property('logTypes[0].rules').with.length.of(0);
+        var config = configService.initConfig();
+        $q.all([
+          config.should.eventually.have.deep.property('logTypes[0].name', ''),
+          config.should.eventually.have.deep.property('logTypes[0].issueKey', ''),
+          config.should.eventually.have.deep.property('logTypes[0].accountKey', ''),
+          config.should.eventually.have.deep.property('logTypes[0].override').deep.equal({}),
+          config.should.eventually.have.deep.property('logTypes[0].rules').with.length.of(0)
+        ]).should.notify(done);
 
         $rootScope.$apply();
       });
@@ -118,7 +126,7 @@
         });
       });
 
-      it('should return a copy of the config in the promise', function() {
+      it('should return a copy of the config in the promise', function(done) {
         var config = {
           exchange: { url: 'https://mail.example.com/' },
           jira: { url: 'http://jira.example.com/2' }
@@ -126,8 +134,10 @@
         var result = configService.saveConfig(config);
 
         // We want same content, but not same object to prevent leaking internal structure
-        result.should.eventually.deep.equal(config);
-        result.should.not.eventually.equal(config);
+        $q.all([
+          result.should.eventually.deep.equal(config),
+          result.should.not.eventually.equal(config)
+        ]).should.notify(done);
 
         $rootScope.$apply();
       });

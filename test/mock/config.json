@@ -17,7 +17,9 @@
             "accountKey": "ATT02",
             "issueKey": "TP-2",
             "name": "Test Issue 2",
-            "override": {},
+            "override": {
+                "comment": "override_subj"
+            },
             "rules": []
         },
         {
