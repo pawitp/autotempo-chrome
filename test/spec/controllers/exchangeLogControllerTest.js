@@ -51,7 +51,7 @@
         rules: [{ field: 'categories', op: 'contains', value: 'Training' }]
       },
       {
-        accountKey: 'DST20',
+        accountKey: 'ATT03',
         issueKey: 'TP-3',
         name: 'test2',
         override: {},
