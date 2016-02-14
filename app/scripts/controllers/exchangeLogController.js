@@ -31,7 +31,7 @@ exchangeLogController.controller('ExchangeLogController', ['$scope', '$rootScope
               } else if (typeof field === 'object') {
                 // Array
                 var lowerCasedField = field.map(function(x) { return x.toLowerCase(); });
-                if (lowerCasedField.includes(rule.value.toLowerCase())) {
+                if (lowerCasedField.indexOf(rule.value.toLowerCase()) !== -1) {
                   appointment.logType = logType;
                 }
               }
