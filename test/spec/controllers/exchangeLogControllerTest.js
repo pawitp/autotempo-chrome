@@ -212,7 +212,7 @@
         vm.isToday().should.be.true;
       });
       it('should return false for different day', function() {
-        vm.inputDate = new Date("2011-01-01");
+        vm.inputDate = new Date('2011-01-01');
         vm.isToday().should.be.false;
       });
     });
