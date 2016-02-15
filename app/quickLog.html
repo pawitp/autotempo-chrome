@@ -19,7 +19,7 @@
       </div>
       <div class="form-group">
         <label for="quickComment">Comment</label>
-        <textarea class="form-control" id="quickComment" data-ng-model="quickLog.comment" data-ng-readonly="quickLog.commentReadOnly"></textarea>
+        <textarea class="form-control" id="quickComment" data-ng-model="quickLog.comment"></textarea>
       </div>
       <span uib-tooltip="Please select a type" tooltip-enable="!quickLog.logType.issueKey" tooltip-placement="right">
         <button data-ng-click="quickLog.submitQuickLog()" data-ng-disabled="!quickLog.logType.issueKey" class="btn btn-primary" id="quickSubmit">Submit</button>

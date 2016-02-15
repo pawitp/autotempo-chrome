@@ -52,14 +52,11 @@
       it('should override log comment', function() {
         vm.overrideComment('asdf');
         vm.comment.should.equal('asdf');
-        vm.commentReadOnly.should.be.true;
       });
       it('should not change comment if override is not specified', function() {
         vm.comment = 'fdas';
-        vm.commentReadOnly = true;
         vm.overrideComment(undefined);
         vm.comment.should.equal('fdas');
-        vm.commentReadOnly.should.be.false;
       });
     });
 
@@ -83,6 +80,7 @@
         // Reset form
         vm.logType.name.should.equal('Do not log');
         vm.durationHours.should.equal(0);
+        vm.comment.should.be.empty;
       });
     });
 

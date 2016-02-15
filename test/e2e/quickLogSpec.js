@@ -30,16 +30,14 @@ describe('Quick Log', function() {
     $('#quickLogType option[value="Test Issue 1"]').click();
     $('#quickDuration').sendKeys('1.5');
     $('#quickComment').sendKeys('Test Comment');
-    $('#quickComment').getAttribute('readonly').should.eventually.be.null;
     $('#quickSubmit').click();
 
     element.all(by.repeater('result in rc.results')).count().should.eventually.equal(1);
   });
 
-  it('should disable custom comment when overridden', function() {
+  it('should disable override comment', function() {
     $('#quickLogType option[value="Test Issue 2"]').click();
     $('#quickComment').getAttribute('value').should.eventually.equal('override_subj');
-    $('#quickComment').getAttribute('readonly').should.eventually.equal('true');
   });
 
   it('should disable log button when no type is selected', function() {
