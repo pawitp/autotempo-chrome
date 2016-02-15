@@ -10,8 +10,22 @@
         <select id="quickLogType"
                 class="form-control"
                 data-ng-options="type.name for type in quickLog.logTypes track by type.name"
-                data-ng-change="quickLog.overrideComment(quickLog.logType.override.comment)"
+                data-ng-change="quickLog.applyLogType(quickLog.logType)"
                 data-ng-model="quickLog.logType"></select>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="quickIssueKey">Issue</label>
+            <input type="text" class="form-control" id="quickIssueKey" data-ng-model="quickLog.issueKey">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="quickAccountKey">Account</label>
+            <input type="text" class="form-control" id="quickAccountKey" data-ng-model="quickLog.accountKey">
+          </div>
+        </div>
       </div>
       <div class="form-group">
         <label for="quickDuration">Hours</label>

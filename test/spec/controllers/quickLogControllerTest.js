@@ -48,14 +48,28 @@
       ]);
     });
     
-    describe('overrideComment', function() {
+    describe('applyLogType', function() {
+      it('should apply issue key and account key', function() {
+        vm.applyLogType({
+          issueKey: 'INT-123',
+          accountKey: 'ATT01',
+          override: {}
+        });
+
+        vm.issueKey.should.equal('INT-123');
+        vm.accountKey.should.equal('ATT01');
+      });
       it('should override log comment', function() {
-        vm.overrideComment('asdf');
+        vm.applyLogType({
+          override: {
+            comment: 'asdf'
+          }
+        });
         vm.comment.should.equal('asdf');
       });
       it('should not change comment if override is not specified', function() {
         vm.comment = 'fdas';
-        vm.overrideComment(undefined);
+        vm.applyLogType({ override: {} });
         vm.comment.should.equal('fdas');
       });
     });
@@ -65,10 +79,11 @@
         vm.date = new Date();
         vm.durationHours = 1;
         vm.comment = 'Test comment';
-        vm.logType = { issueKey: 'TAT-01', accountKey: 'ATT01' };
-        
+        vm.issueKey = 'TAT-01';
+        vm.accountKey = 'ATT01';
+
         vm.submitQuickLog();
-        
+
         tempoLogService.submit.should.have.been.calledWithMatch(
           vm.date,
           3600,

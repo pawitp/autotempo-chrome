@@ -35,8 +35,10 @@ describe('Quick Log', function() {
     element.all(by.repeater('result in rc.results')).count().should.eventually.equal(1);
   });
 
-  it('should disable override comment', function() {
+  it('should set issue key, account key and comment from log type', function() {
     $('#quickLogType option[value="Test Issue 2"]').click();
+    $('#quickIssueKey').getAttribute('value').should.eventually.equal('TP-2');
+    $('#quickAccountKey').getAttribute('value').should.eventually.equal('ATT02');
     $('#quickComment').getAttribute('value').should.eventually.equal('override_subj');
   });
 

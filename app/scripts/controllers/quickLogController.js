@@ -13,20 +13,24 @@ quickLogController.controller('QuickLogController', ['$scope', '$rootScope', 'te
 
     function clearQuickLog() {
       vm.logType = vm.logTypes[0];
+      vm.applyLogType(vm.logType);
       vm.durationHours = 0;
       vm.comment = '';
     }
 
-    vm.overrideComment = function(comment) {
-      if (comment) {
-        vm.comment = comment;
+    vm.applyLogType = function(logType) {
+      vm.issueKey = logType.issueKey;
+      vm.accountKey = logType.accountKey;
+
+      if (logType.override && logType.override.comment) {
+        vm.comment = logType.override.comment;
       }
     };
 
     vm.submitQuickLog = function() {
       var duration = utils.hoursToSeconds(vm.durationHours);
 
-      var result = tempoLogService.submit(vm.date, duration, vm.comment, vm.logType.issueKey, vm.logType.accountKey);
+      var result = tempoLogService.submit(vm.date, duration, vm.comment, vm.issueKey, vm.accountKey);
       $rootScope.$broadcast('result', result);
       clearQuickLog();
     };
