@@ -26,15 +26,10 @@ quickLogController.controller('QuickLogController', ['$scope', '$rootScope', 'te
     };
 
     vm.submitQuickLog = function() {
-      // Create "appointment" from quick log
-      var appointment = {
-        start: vm.date,
-        duration: utils.hoursToSeconds(vm.durationHours),
-        subject: vm.comment,
-        logType: vm.logType
-      };
+      var duration = utils.hoursToSeconds(vm.durationHours);
 
-      $rootScope.$broadcast('result', tempoLogService.submit(appointment));
+      var result = tempoLogService.submit(vm.date, duration, vm.comment, vm.logType.issueKey, vm.logType.accountKey);
+      $rootScope.$broadcast('result', result);
       clearQuickLog();
     };
 

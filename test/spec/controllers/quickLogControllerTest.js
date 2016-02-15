@@ -65,21 +65,20 @@
 
     describe('submitQuickLog', function() {
       it('should submit log and broadcast result', function() {
-        var logType = { issueKey: 'TAT-01', accountKey: 'ATT01' };
-
         vm.date = new Date();
         vm.durationHours = 1;
         vm.comment = 'Test comment';
-        vm.logType = logType;
+        vm.logType = { issueKey: 'TAT-01', accountKey: 'ATT01' };
         
         vm.submitQuickLog();
         
-        tempoLogService.submit.should.have.been.calledWithMatch({
-          start: vm.date,
-          duration: 3600,
-          subject: 'Test comment',
-          logType: logType
-        });
+        tempoLogService.submit.should.have.been.calledWithMatch(
+          vm.date,
+          3600,
+          'Test comment',
+          'TAT-01',
+          'ATT01'
+        );
         
         // Reset form
         vm.logType.name.should.equal('Do not log');

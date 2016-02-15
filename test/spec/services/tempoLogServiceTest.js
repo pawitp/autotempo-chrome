@@ -5,7 +5,8 @@
   describe('tempoLogService', function() {
 
     var tempoLogService, jiraService, $q, $rootScope;
-    var appointment;
+
+    var testDate, testDurationSeconds, testComment, testIssueKey, testAccountKey;
 
     beforeEach(module('tempoLogService'));
 
@@ -25,14 +26,14 @@
       $rootScope = $injector.get('$rootScope');
 
       // Default appointment
-      appointment = {
-        subject: 'test subject',
-        logType: { issueKey: 'ISS-01', accountKey: 'ATT01' },
-        duration: 3600,
-      };
+      testDate = new Date();
+      testDurationSeconds = 3600;
+      testComment = 'test subject';
+      testIssueKey = 'ISS-01';
+      testAccountKey = 'ATT01';
 
       // Default mocks
-      jiraService.submitTempo.withArgs(appointment).returns($q.when({
+      submitTempoStub().returns($q.when({
         data: { test: 'data' }
       }));
 
@@ -44,7 +45,7 @@
 
     describe('submit', function() {
       it('should submit work log via jiraService', function(done) {
-        var data = tempoLogService.submit(appointment);
+        var data = submitLog();
         data.result.should.deep.equal({
           subject: 'test subject',
           issueKey: 'ISS-01',
@@ -71,8 +72,8 @@
       });
 
       it('should submit one work log at a time', function(done) {
-        var data = tempoLogService.submit(appointment);
-        var data2 = tempoLogService.submit(appointment);
+        var data = submitLog();
+        var data2 = submitLog();
 
         data.result.should.have.property('status', 'Processing');
         data2.result.should.have.property('status', 'Queued');
@@ -86,11 +87,11 @@
       });
 
       it('should set the error message when there is an HTTP error', function(done) {
-        jiraService.submitTempo.withArgs(appointment).returns($q.reject({
+        submitTempoStub().returns($q.reject({
           statusText: 'Error status'
         }));
 
-        var data = tempoLogService.submit(appointment);
+        var data = submitLog();
 
         $q.all([
           data.promise.should.eventually.have.property('status', 'Error'),
@@ -101,11 +102,11 @@
       });
       
       it('should set the error message when there is a JIRA error', function(done) {
-        jiraService.submitTempo.withArgs(appointment).returns($q.reject({
+        jiraService.submitTempo.withArgs(testDate, testDurationSeconds, testComment, testIssueKey, testAccountKey).returns($q.reject({
           data: { error: 'JIRA error message' }
         }));
 
-        var data = tempoLogService.submit(appointment);
+        var data = submitLog();
 
         $q.all([
           data.promise.should.eventually.have.property('status', 'Error'),
@@ -116,8 +117,8 @@
       });
 
       it('should cache account list', function(done) {
-        var data = tempoLogService.submit(appointment);
-        var data2 = tempoLogService.submit(appointment);
+        var data = submitLog();
+        var data2 = submitLog();
 
         $q.all([
           data.promise.should.eventually.have.property('accountDescription', 'ATT01 - Test 01'),
@@ -130,6 +131,14 @@
       });
 
     });
+
+    function submitTempoStub() {
+      return jiraService.submitTempo.withArgs(testDate, testDurationSeconds, testComment, testIssueKey, testAccountKey);
+    }
+
+    function submitLog() {
+      return tempoLogService.submit(testDate, testDurationSeconds, testComment, testIssueKey, testAccountKey);
+    }
 
   });
 

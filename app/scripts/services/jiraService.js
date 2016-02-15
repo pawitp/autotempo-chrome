@@ -53,28 +53,21 @@ jiraService.factory('jiraService', ['$http', '$q', 'utils', 'configService',
       return angular.fromJson(jsonp.substring(3, jsonp.length - 1));
     }
 
-    function createWorklog(appointment, existingEstimate) {
+    function createWorklog(date, durationSeconds, comment, issueKey, accountKey, existingEstimate) {
       var workLog = {
-        dateStarted: formatDate(appointment.start),
-        timeSpentSeconds: appointment.duration,
-        comment: appointment.subject,
+        dateStarted: formatDate(date),
+        timeSpentSeconds: durationSeconds,
+        comment: comment,
         author: {
           name: configService.getJiraCredentials().username
         },
         issue: {
-          key: appointment.logType.issueKey
+          key: issueKey
         },
         worklogAttributes: [
-          {key: '_Account_', value: appointment.logType.accountKey}
+          { key: '_Account_', value: accountKey }
         ]
       };
-
-      // Merge in overrides
-      if (appointment.logType.override) {
-        if (appointment.logType.override.comment) {
-          workLog.comment = appointment.logType.override.comment;
-        }
-      }
 
       if (existingEstimate !== null) {
         var newEstimate = existingEstimate - workLog.timeSpentSeconds;
@@ -92,9 +85,9 @@ jiraService.factory('jiraService', ['$http', '$q', 'utils', 'configService',
 
     var service = {};
 
-    service.submitTempo = function(appointment) {
-      return getRemainingEstimate(appointment.logType.issueKey)
-        .then(createWorklog.bind(null, appointment));
+    service.submitTempo = function(date, durationSeconds, comment, issueKey, accountKey) {
+      return getRemainingEstimate(issueKey)
+        .then(createWorklog.bind(null, date, durationSeconds, comment, issueKey, accountKey));
     };
 
     service.getAccountList = function(issueKey) {

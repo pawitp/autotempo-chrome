@@ -89,7 +89,13 @@ exchangeLogController.controller('ExchangeLogController', ['$scope', '$rootScope
           return;
         }
 
-        $rootScope.$broadcast('result', tempoLogService.submit(appointment));
+        var comment = appointment.subject;
+        if (appointment.logType.override.comment) {
+          comment = appointment.logType.override.comment;
+        }
+
+        var result = tempoLogService.submit(appointment.start, appointment.duration, comment, appointment.logType.issueKey, appointment.logType.accountKey);
+        $rootScope.$broadcast('result', result);
       });
     };
 

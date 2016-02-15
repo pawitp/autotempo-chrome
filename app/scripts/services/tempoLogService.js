@@ -30,15 +30,15 @@ tempoLogService.factory('tempoLogService', ['$q', '$queueFactory', '$cacheFactor
 
     var service = {};
 
-    service.submit = function(appointment) {
+    service.submit = function(date, durationSeconds, comment, issueKey, accountKey) {
       var deferred = $q.defer();
 
       var result = {
-        subject: appointment.subject,
-        issueKey: appointment.logType.issueKey,
-        accountKey: appointment.logType.accountKey,
+        subject: comment,
+        issueKey: issueKey,
+        accountKey: accountKey,
         // TODO: standardize duration to either seconds or milliseconds
-        duration: appointment.duration * 1000,
+        duration: durationSeconds * 1000,
         status: 'Queued'
       };
 
@@ -49,7 +49,7 @@ tempoLogService.factory('tempoLogService', ['$q', '$queueFactory', '$cacheFactor
         result.status = 'Processing';
         deferred.notify(result);
 
-        return jiraService.submitTempo(appointment)
+        return jiraService.submitTempo(date, durationSeconds, comment, issueKey, accountKey)
           .then(function(response) {
             // Notify success
             result.response = response.data;

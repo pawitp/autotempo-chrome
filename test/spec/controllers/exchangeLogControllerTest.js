@@ -177,19 +177,22 @@
         vm.appointments[2].logType = vm.logTypes[2];
         
         vm.submitExchangeLog();
-        tempoLogService.submit.should.have.been.calledWithMatch({
-          subject: 'Test Appointment !',
-          start: new Date('2015-11-20T01:00:00.000Z'),
-          logType: { accountKey: 'ATT01', issueKey: 'TP-1', override: { comment: '' } },
-          duration: 1800
-        });
-        tempoLogService.submit.should.have.been.calledWithMatch({
-          subject: 'Test Appointment 3',
-          start: new Date('2015-11-20T11:00:00.000Z'),
-          logType: { accountKey: 'ATT02', issueKey: 'TP-2', override: { comment: 'TTTT' } },
-          duration: 1200
-        });
+        tempoLogService.submit.should.have.been.calledWithMatch(
+          new Date('2015-11-20T01:00:00.000Z'),
+          1800,
+          'Test Appointment !',
+          'TP-1',
+          'ATT01'
+        );
 
+        // Override comment
+        tempoLogService.submit.should.have.been.calledWithMatch(
+          new Date('2015-11-20T11:00:00.000Z'),
+          1200,
+          'TTTT',
+          'TP-2',
+          'ATT02'
+        );
       });
     });
 

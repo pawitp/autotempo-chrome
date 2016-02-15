@@ -73,15 +73,7 @@
             return true;
           }).respond(500, '');
 
-        jiraService.submitTempo({
-          start: new Date('2015-12-26T08:39:12.540Z'),
-          duration: 10000,
-          subject: 'Subject',
-          logType: {
-            accountKey: 'ATT02',
-            issueKey: 'INT-2'
-          }
-        });
+        jiraService.submitTempo(new Date('2015-12-26T08:39:12.540Z'), 10000, 'Subject', 'INT-2', 'ATT02');
 
         $httpBackend.flush();
       });
@@ -99,15 +91,7 @@
             worklogAttributes: [{ key: '_Account_', value: 'ATT02' }]
           }).respond({});
 
-        jiraService.submitTempo({
-          start: new Date('2015-12-26T08:39:12.540Z'),
-          duration: 36000,
-          subject: 'Subject',
-          logType: {
-            accountKey: 'ATT02',
-            issueKey: 'INT-2'
-          }
-        });
+        jiraService.submitTempo(new Date('2015-12-26T08:39:12.540Z'), 36000, 'Subject', 'INT-2', 'ATT02');
 
         $httpBackend.flush();
       });
@@ -128,15 +112,7 @@
             worklogAttributes: [{ key: '_Account_', value: 'ATT02' }]
           }).respond({});
 
-        jiraService.submitTempo({
-          start: new Date('2015-12-26T08:39:12.540Z'),
-          duration: 36000,
-          subject: 'Subject',
-          logType: {
-            accountKey: 'ATT02',
-            issueKey: 'TP-2'
-          }
-        });
+        jiraService.submitTempo(new Date('2015-12-26T08:39:12.540Z'), 36000, 'Subject', 'TP-2', 'ATT02');
 
         $httpBackend.flush();
       });
@@ -157,44 +133,7 @@
             worklogAttributes: [{ key: '_Account_', value: 'ATT02' }]
           }).respond({});
 
-        jiraService.submitTempo({
-          start: new Date('2015-12-26T08:39:12.540Z'),
-          duration: 36000,
-          subject: 'Subject',
-          logType: {
-            accountKey: 'ATT02',
-            issueKey: 'TP-2'
-          }
-        });
-
-        $httpBackend.flush();
-      });
-
-      it('should override comment when specified in the logType', function() {
-        mockRemainingEstimateOfInternalIssue('INT-2');
-
-        $httpBackend
-          .expect('POST', 'https://jira.example.com/rest/tempo-timesheets/3/worklogs/', {
-            dateStarted: '2015-12-26T15:39:12',
-            timeSpentSeconds: 36000,
-            comment: 'Override Subject',
-            author: { name: 'username' },
-            issue: { key: 'INT-2' },
-            worklogAttributes: [{ key: '_Account_', value: 'ATT02' }]
-          }).respond({});
-
-        jiraService.submitTempo({
-          start: new Date('2015-12-26T08:39:12.540Z'),
-          duration: 36000,
-          subject: 'Subject',
-          logType: {
-            accountKey: 'ATT02',
-            issueKey: 'INT-2',
-            override: {
-              comment: 'Override Subject'
-            }
-          }
-        });
+        jiraService.submitTempo(new Date('2015-12-26T08:39:12.540Z'), 36000, 'Subject', 'TP-2', 'ATT02');
 
         $httpBackend.flush();
       });
@@ -203,15 +142,7 @@
         $httpBackend.when('GET', 'https://jira.example.com/rest/api/2/issue/INT-2?fields=timetracking')
           .respond(404, '');
 
-        jiraService.submitTempo({
-          start: new Date('2015-12-26T08:39:12.540Z'),
-          duration: 36000,
-          subject: 'Subject',
-          logType: {
-            accountKey: 'ATT02',
-            issueKey: 'INT-2'
-          }
-        }).should.be.rejected;
+        jiraService.submitTempo(new Date('2015-12-26T08:39:12.540Z'), 36000, 'Subject', 'INT-2', 'ATT02').should.be.rejected;
 
         $httpBackend.flush();
       });
