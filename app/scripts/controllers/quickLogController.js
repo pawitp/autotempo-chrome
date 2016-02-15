@@ -14,7 +14,7 @@ quickLogController.controller('QuickLogController', ['$scope', '$rootScope', 'te
     function clearQuickLog() {
       vm.logType = vm.logTypes[0];
       vm.durationHours = 0;
-      vm.comment = "";
+      vm.comment = '';
     }
 
     vm.overrideComment = function(comment) {
