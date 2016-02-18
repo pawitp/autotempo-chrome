@@ -52,8 +52,7 @@
       it('should apply issue key and account key', function() {
         vm.applyLogType({
           issueKey: 'INT-123',
-          accountKey: 'ATT01',
-          override: {}
+          accountKey: 'ATT01'
         });
 
         vm.issueKey.should.equal('INT-123');

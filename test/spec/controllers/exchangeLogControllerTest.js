@@ -56,6 +56,12 @@
         name: 'test2',
         override: {},
         rules: []
+      },
+      {
+        accountKey: 'ATT04',
+        issueKey: 'TP-4',
+        name: 'test minimal'
+        /* no overrides and no rules */
       }
     ];
 
@@ -192,6 +198,20 @@
           'TTTT',
           'TP-2',
           'ATT02'
+        );
+      });
+
+      it('should work without override', function() {
+        mockAppointments();
+        vm.appointments[0].logType = vm.logTypes[4];
+        
+        vm.submitExchangeLog();
+        tempoLogService.submit.should.have.been.calledWithMatch(
+          new Date('2015-11-20T01:00:00.000Z'),
+          1800,
+          'Test Appointment !',
+          'TP-4',
+          'ATT04'
         );
       });
     });

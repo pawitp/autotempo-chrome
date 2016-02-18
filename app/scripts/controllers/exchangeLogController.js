@@ -90,7 +90,7 @@ exchangeLogController.controller('ExchangeLogController', ['$scope', '$rootScope
         }
 
         var comment = appointment.subject;
-        if (appointment.logType.override.comment) {
+        if (appointment.logType.override && appointment.logType.override.comment) {
           comment = appointment.logType.override.comment;
         }
 
